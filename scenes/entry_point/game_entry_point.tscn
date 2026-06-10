@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://bgygd7yooef5e"]
+
+[ext_resource type="Script" uid="uid://brnoefxgrh7rh" path="res://scenes/entry_point/game_entry_point.gd" id="1_q5v3t"]
+[ext_resource type="PackedScene" uid="uid://bewi7gvan2wwq" path="res://addons/ninetailsrabbit.indie_blueprint_ui/src/content_warning/content_warning_displayer.tscn" id="2_o56dt"]
+
+[node name="GameEntryPoint" type="Node" unique_id=1777751467]
+script = ExtResource("1_q5v3t")
+
+[node name="ContentWarnings" parent="." unique_id=536023745 instance=ExtResource("2_o56dt")]
