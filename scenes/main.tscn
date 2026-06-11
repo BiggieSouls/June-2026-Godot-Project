@@ -1,5 +1,8 @@
 [gd_scene format=3 uid="uid://0sfb8r36biaf"]
 
+[ext_resource type="PackedScene" uid="uid://cs6vcuo54catv" path="res://scenes/player.tscn" id="1_o5qli"]
+[ext_resource type="Script" uid="uid://cvy384g4r468y" path="res://scripts/CameraV2.cs" id="2_0wfyh"]
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_sgp6g"]
 size = Vector3(10, 0.25, 10)
 
@@ -12,12 +15,24 @@ size = Vector3(10, 0.25, 10)
 
 [node name="Collider_Physics" type="CollisionShape3D" parent="Ground" unique_id=651484579]
 shape = SubResource("BoxShape3D_sgp6g")
-metadata/_edit_lock_ = true
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=558619253]
 mesh = SubResource("BoxMesh_sgp6g")
-metadata/_edit_lock_ = true
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1656585370]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
 shadow_enabled = true
+
+[node name="Player" parent="." unique_id=951074122 instance=ExtResource("1_o5qli")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+
+[node name="Camera" type="Node3D" parent="." unique_id=726564599]
+script = ExtResource("2_0wfyh")
+
+[node name="YawPivot" type="Node3D" parent="Camera" unique_id=80548977]
+
+[node name="PitchPivot" type="Node3D" parent="Camera/YawPivot" unique_id=1780408474]
+
+[node name="Camera3D" type="Camera3D" parent="Camera/YawPivot/PitchPivot" unique_id=1111735431]
+transform = Transform3D(-1, 3.6946464e-08, -7.9231945e-08, 0, 0.9063078, 0.4226183, 8.742278e-08, 0.4226183, -0.9063078, 0, 3.85, -4)
+size = 5.0
