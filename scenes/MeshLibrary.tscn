@@ -1,0 +1,12 @@
+[gd_scene format=3 uid="uid://cges87dpwkrgp"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_aboxo"]
+
+[node name="Library" type="Node3D" unique_id=1781389397]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=1544010752]
+mesh = SubResource("BoxMesh_aboxo")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="." unique_id=261759973]
+transform = Transform3D(0.70710677, 0.70710677, 0, -0.70710677, 0.70710677, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("BoxMesh_aboxo")

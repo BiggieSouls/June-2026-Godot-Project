@@ -1,3 +1,21 @@
 [gd_scene format=3 uid="uid://0sfb8r36biaf"]
 
+[ext_resource type="PackedScene" uid="uid://d2hfqona6uvom" path="res://scenes/world_terrain_handler.tscn" id="1_pw63i"]
+[ext_resource type="PackedScene" uid="uid://b4veluht8woet" path="res://scenes/stilty_boi.tscn" id="2_7ykc4"]
+
 [node name="MainScene" type="Node3D" unique_id=1746553158]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1981620023]
+transform = Transform3D(-0.8660254, -0.43301278, 0.24999999, -0.2847689, 0.83813584, 0.46522564, -0.4109826, 0.331705, -0.84915555, 0, 0, 0)
+light_color = Color(0.9999991, 0.9988285, 0.84211296, 1)
+shadow_enabled = true
+directional_shadow_max_distance = 27.0
+
+[node name="WorldTerrainHandler" parent="." unique_id=1401906326 instance=ExtResource("1_pw63i")]
+
+[node name="stilty boi" parent="." unique_id=17618507 instance=ExtResource("2_7ykc4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.2219133, 0)
+
+[node name="Camera3D" type="Camera3D" parent="stilty boi" unique_id=1977023002]
+transform = Transform3D(1, 0, 0, 0, 0.9981412, 0.060944017, 0, -0.060944017, 0.9981412, 0, 1.127181, 0.5217266)
+current = true
