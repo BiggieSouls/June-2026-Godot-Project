@@ -4,6 +4,19 @@
 [ext_resource type="PackedScene" uid="uid://b4veluht8woet" path="res://scenes/stilty_boi.tscn" id="2_ybuwm"]
 [ext_resource type="PackedScene" uid="uid://cs6vcuo54catv" path="res://scenes/player.tscn" id="3_ybuwm"]
 
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_ybuwm"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_iya78"]
+sky_material = SubResource("ProceduralSkyMaterial_ybuwm")
+
+[sub_resource type="Environment" id="Environment_l6i3r"]
+background_mode = 2
+sky = SubResource("Sky_iya78")
+tonemap_mode = 2
+glow_enabled = true
+
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_iya78"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_l6i3r"]
@@ -13,6 +26,9 @@ height = 1.4
 height = 1.4
 
 [node name="Playground" type="Node3D" unique_id=1104971774]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1988465631]
+environment = SubResource("Environment_l6i3r")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=248301366]
 transform = Transform3D(-0.8660254, -0.43301278, 0.24999997, -0.101137266, 0.6413703, 0.76053643, -0.48966447, 0.63335943, -0.59923667, 0, 0, 0)

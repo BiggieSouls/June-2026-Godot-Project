@@ -1,0 +1,11 @@
+[gd_resource type="CylinderMesh" format=3 uid="uid://jt4ysbw53ubk"]
+
+[ext_resource type="Texture2D" uid="uid://dpwv0qf6tb7we" path="res://assets/materials/ocean/textures/normal_B.png" id="1_5wmbj"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_3aygh"]
+albedo_texture = ExtResource("1_5wmbj")
+
+[resource]
+material = SubResource("StandardMaterial3D_3aygh")
+top_radius = 0.0
+height = 20.0

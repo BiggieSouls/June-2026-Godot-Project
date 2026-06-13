@@ -52,10 +52,17 @@ func init_infinite_terrain_relative_coord_array(): #generates a 'square' array o
 func infinite_terrain_generate():
 	var closestcell : Vector3i = terrain_node.local_to_map(terrain_node.to_local(self.position))
 	closestcell.y = 0 #finds the cell under the player
+	var newcell : Vector3i
+	var currentcellnoisefloat : float
 	for radcoord in infinite_terrain_relative_coord_array: #for each cell in gridmap that is blank, make a new cell
-		var newcell : Vector3i = closestcell + radcoord
+		newcell = closestcell + radcoord
+		currentcellnoisefloat =noisedata.get_pixel(abs(newcell.x % noisesize), abs(newcell.z % noisesize)).r
 		if terrain_node.get_cell_item(newcell) == -1:
-			if noisedata.get_pixel(abs(newcell.x % noisesize), abs(newcell.z % noisesize)).r < 0.4:
+			if randf() < 0.05:
+				terrain_node.set_cell_item(newcell, 4)
+			else: if currentcellnoisefloat < 0.15:
+				terrain_node.set_cell_item(newcell, 3)
+			else: if currentcellnoisefloat < 0.4:
 				terrain_node.set_cell_item(newcell, 1, randi_range(0,23))
 			else:
 				terrain_node.set_cell_item(newcell, 0)
