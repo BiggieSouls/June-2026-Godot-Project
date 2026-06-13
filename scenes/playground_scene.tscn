@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://d2hfqona6uvom" path="res://scenes/world_terrain_handler.tscn" id="1_64foh"]
 [ext_resource type="PackedScene" uid="uid://b4veluht8woet" path="res://scenes/stilty_boi.tscn" id="2_ybuwm"]
+[ext_resource type="PackedScene" uid="uid://cs6vcuo54catv" path="res://scenes/player.tscn" id="3_ybuwm"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_iya78"]
 
@@ -20,7 +21,7 @@ shadow_enabled = true
 directional_shadow_max_distance = 27.0
 
 [node name="WorldTerrainHandler" parent="." unique_id=1401906326 instance=ExtResource("1_64foh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2124574, 2.4632246, -4.4260044)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6233835, 1.7780027, -7.7241287)
 
 [node name="stilty boi" parent="." unique_id=17618507 instance=ExtResource("2_ybuwm")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.025017, 10.10578)
@@ -37,16 +38,6 @@ skeleton = NodePath("../..")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="RigidToy" unique_id=1293428027]
 shape = SubResource("CapsuleShape3D_q6pdw")
 
-[node name="RemoteTransform3D" type="RemoteTransform3D" parent="RigidToy" unique_id=471102755]
-remote_path = NodePath("../../RigidToyPosition")
-update_rotation = false
-update_scale = false
-
-[node name="RemoteTransform3D2" type="RemoteTransform3D" parent="RigidToy" unique_id=450921912]
-remote_path = NodePath("../../WorldTerrainHandler")
-update_rotation = false
-update_scale = false
-
 [node name="RigidToy2" type="RigidBody3D" parent="." unique_id=1820057044]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.17433667, 2.4632246, -4.4260044)
 physics_material_override = SubResource("PhysicsMaterial_iya78")
@@ -60,7 +51,7 @@ skeleton = NodePath("../..")
 shape = SubResource("CapsuleShape3D_q6pdw")
 
 [node name="RigidToyPosition" type="Node3D" parent="." unique_id=1278686294]
-transform = Transform3D(1, 0, 0, 0, 0.8660254, -0.5, 0, 0.5, 0.8660254, 1.2124574, 2.4632246, -4.4260044)
+transform = Transform3D(1, 0, 0, 0, 0.8660254, -0.5, 0, 0.5, 0.8660254, 0.6233835, 1.7780027, -7.7241287)
 
 [node name="Camera3D" type="Camera3D" parent="RigidToyPosition" unique_id=1938668116]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 6, 0)
@@ -68,3 +59,16 @@ current = true
 
 [node name="stilty boi" parent="RigidToyPosition" unique_id=684036138 instance=ExtResource("2_ybuwm")]
 transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 0, 0.3970778, -4.7683716e-07)
+
+[node name="Player" parent="." unique_id=951074122 instance=ExtResource("3_ybuwm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6233835, 1.7780027, -7.7241287)
+
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="Player" unique_id=471102755]
+remote_path = NodePath("../../RigidToyPosition")
+update_rotation = false
+update_scale = false
+
+[node name="RemoteTransform3D2" type="RemoteTransform3D" parent="Player" unique_id=450921912]
+remote_path = NodePath("../../WorldTerrainHandler")
+update_rotation = false
+update_scale = false
