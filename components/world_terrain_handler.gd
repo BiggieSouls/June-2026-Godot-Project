@@ -10,7 +10,7 @@ var infinite_terrain_relative_coord_array : Array
 var noisedata : Image
 
 func _ready() -> void:
-	infinite_terrain_relative_coord_array_gen()
+	init_infinite_terrain_relative_coord_array()
 	generate_noise2d()
 	pass
 
@@ -31,7 +31,7 @@ func generate_noise2d():
 	await texture.changed
 	noisedata = texture.get_image()
 
-func infinite_terrain_relative_coord_array_gen(): #generates a 'square' array of Vector3s (x, 0, z) from -radius to +radius
+func init_infinite_terrain_relative_coord_array(): #generates a 'square' array of Vector3s (x, 0, z) from -radius to +radius
 	var terrain_square_length : int = infinite_terrain_radius*2 + 1
 	var xi : int = 1
 	var zi : int = 1
@@ -56,7 +56,7 @@ func infinite_terrain_generate():
 		var newcell : Vector3i = closestcell + radcoord
 		if terrain_node.get_cell_item(newcell) == -1:
 			if noisedata.get_pixel(abs(newcell.x % noisesize), abs(newcell.z % noisesize)).r < 0.5:
-				terrain_node.set_cell_item(newcell, 1)
+				terrain_node.set_cell_item(newcell, 1, randi_range(0,23))
 			else:
 				terrain_node.set_cell_item(newcell, 0)
 	print(noisedata.get_pixel(abs(closestcell.x % noisesize), abs(closestcell.z % noisesize)))
