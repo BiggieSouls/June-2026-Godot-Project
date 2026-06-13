@@ -28,7 +28,7 @@ config/name="June2026Project"
 config/description="Indie Blueprint is a comprehensive Godot project template designed to streamline your development process. It includes essential features, optimized settings, and best practices to help you create amazing indie game"
 config/version="1.3.0"
 run/main_scene="uid://0sfb8r36biaf"
-config/features=PackedStringArray("4.6", "Forward Plus")
+config/features=PackedStringArray("4.6", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
 [audio]
@@ -66,6 +66,10 @@ window/size/viewport_width=1280
 window/size/viewport_height=720
 window/size/window_width_override=1280
 window/size/window_height_override=720
+
+[dotnet]
+
+project/assembly_name="June2026Project"
 
 [editor_plugins]
 

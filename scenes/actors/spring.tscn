@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://bsiwkibjyia6q"]
+
+[ext_resource type="PackedScene" uid="uid://b6t2te6bjpivb" path="res://assets/model/spring.glb" id="1_2u7qe"]
+[ext_resource type="Script" uid="uid://fgr3myys02o1" path="res://scripts/Spring.cs" id="1_3qi5g"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_3qi5g"]
+height = 0.6686829
+radius = 0.3
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_rmfrr"]
+height = 0.07324804
+
+[node name="Spring" type="Node3D" unique_id=1738681288]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0, 0)
+script = ExtResource("1_3qi5g")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=2119833421]
+
+[node name="Model" parent="StaticBody3D" unique_id=847380928 instance=ExtResource("1_2u7qe")]
+
+[node name="Collide_Coil" type="CollisionShape3D" parent="StaticBody3D" unique_id=1511747514]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3341156, 0)
+shape = SubResource("CylinderShape3D_3qi5g")
+
+[node name="Area3D" type="Area3D" parent="StaticBody3D" unique_id=1459585359]
+
+[node name="Collision_Pad" type="CollisionShape3D" parent="StaticBody3D/Area3D" unique_id=748512380]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.71092284, 0)
+shape = SubResource("CylinderShape3D_rmfrr")
