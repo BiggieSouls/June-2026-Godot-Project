@@ -90,6 +90,21 @@ public partial class player_movement : RigidBody3D
         if (!anyInput)
             state.LinearVelocity *= Friction;
 
+        Vector3 vel = state.LinearVelocity;
+        if (onGround)
+        {
+            vel.X *= Friction;
+            vel.Y *= Friction;
+        }
+        else
+        {
+            vel.X *= 0.999999f;
+            vel.Y *= 0.999999f;
+            //vel.X *= Friction*1.09f;
+            //vel.Y *= Friction * 1.09f;
+        }
+        state.LinearVelocity = vel;
+
         if (Collider_Below == null)
             return;
         else if (Collider_Below.IsColliding())
