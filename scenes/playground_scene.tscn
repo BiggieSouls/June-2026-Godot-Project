@@ -51,7 +51,7 @@ update_scale = false
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2124574, 2.4632246, -4.4260044)
 
 [node name="Camera3D" type="Camera3D" parent="RigidToyPosition" unique_id=1938668116]
-transform = Transform3D(0.9826808, -0.045406878, 0.17965718, 0, 0.96951383, 0.24503668, -0.18530646, -0.24079283, 0.9527226, 1.2676921, 2.3484986, 6.0599613)
+transform = Transform3D(1, 0, 0, 0, 0.6184907, 0.7857921, 0, -0.7857921, 0.6184907, 0, 4.506358, 3.1975968)
 current = true
 
 [node name="stilty boi" parent="RigidToyPosition" unique_id=684036138 instance=ExtResource("2_ybuwm")]
