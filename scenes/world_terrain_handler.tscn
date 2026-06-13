@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://d2hfqona6uvom"]
 
 [ext_resource type="Script" uid="uid://cgfy6k2phes18" path="res://components/world_terrain_handler.gd" id="1_7fgc1"]
-[ext_resource type="MeshLibrary" uid="uid://cr7ptapuvmrwy" path="res://components/world_mesh_library.tres" id="1_lsbrj"]
+[ext_resource type="MeshLibrary" uid="uid://clqyabhygwj62" path="res://components/world_mesh_library_2.tres" id="2_7fgc1"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_7fgc1"]
 
@@ -10,9 +10,10 @@ script = ExtResource("1_7fgc1")
 terrain_node = NodePath("Terrain")
 
 [node name="Terrain" type="GridMap" parent="." unique_id=922888506]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)
 rotation_edit_mode = 1
 top_level = true
-mesh_library = ExtResource("1_lsbrj")
+mesh_library = ExtResource("2_7fgc1")
 physics_material = SubResource("PhysicsMaterial_7fgc1")
 cell_size = Vector3(1, 1, 1)
 data = {
