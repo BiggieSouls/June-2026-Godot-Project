@@ -11,6 +11,8 @@ radius = 1.0
 
 [node name="Player" type="RigidBody3D" unique_id=951074122]
 physics_material_override = SubResource("PhysicsMaterial_g2els")
+gravity_scale = 2.0
+can_sleep = false
 script = ExtResource("1_g2els")
 
 [node name="Pivot" type="Node3D" parent="." unique_id=1127374728]
