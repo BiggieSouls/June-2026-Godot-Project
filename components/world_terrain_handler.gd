@@ -4,7 +4,7 @@ extends Node3D
 @export var inpute_rotation_speed : float = 0.01
 @export var infinite_terrain_radius : int = 20
 @export var noisesize : int = 1024 #MORE THEN 512
-@export var cell_clear_distance : int = 200
+@export var cell_clear_distance : int = 120
 var infinite_terrain_relative_coord_array : Array
 # Called when the node enters the scene tree for the first time.
 var noisedata : Image
@@ -55,11 +55,11 @@ func infinite_terrain_generate():
 	for radcoord in infinite_terrain_relative_coord_array: #for each cell in gridmap that is blank, make a new cell
 		var newcell : Vector3i = closestcell + radcoord
 		if terrain_node.get_cell_item(newcell) == -1:
-			if noisedata.get_pixel(abs(newcell.x % noisesize), abs(newcell.z % noisesize)).r < 0.5:
+			if noisedata.get_pixel(abs(newcell.x % noisesize), abs(newcell.z % noisesize)).r < 0.4:
 				terrain_node.set_cell_item(newcell, 1, randi_range(0,23))
 			else:
 				terrain_node.set_cell_item(newcell, 0)
-	print(noisedata.get_pixel(abs(closestcell.x % noisesize), abs(closestcell.z % noisesize)))
+	
 
 func rotate_terrain_from_input(inputvector : Vector2): #uses Vector2 from input.getvector and rotates the handler, causing an 'orbit' rotation of terrain
 	var playerinput  : Vector2 = inputvector  * inpute_rotation_speed #xyzw

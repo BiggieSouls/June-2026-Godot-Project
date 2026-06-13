@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://dc6b6wwoktcu3" path="res://scripts/player_movement.cs" id="1_g2els"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_g2els"]
+friction = 0.8
 bounce = 0.2
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_3vyb7"]
@@ -11,10 +12,9 @@ radius = 1.0
 
 [node name="Player" type="RigidBody3D" unique_id=951074122]
 physics_material_override = SubResource("PhysicsMaterial_g2els")
-gravity_scale = 2.0
 can_sleep = false
 script = ExtResource("1_g2els")
-Speed = 200
+Friction = 0.999
 
 [node name="Pivot" type="Node3D" parent="." unique_id=1127374728]
 

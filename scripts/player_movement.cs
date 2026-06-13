@@ -19,6 +19,7 @@ public partial class player_movement : RigidBody3D
 	// How fast the player moves in meters per second.
 	[Export]
 	public int Speed { get; set; } = 20;
+	[Export]
 	public float Friction { get; set; } = 0.99f;
 
 	private bool anyInput = false;

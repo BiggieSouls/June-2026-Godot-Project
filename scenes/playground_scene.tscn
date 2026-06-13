@@ -51,7 +51,7 @@ skeleton = NodePath("../..")
 shape = SubResource("CapsuleShape3D_q6pdw")
 
 [node name="RigidToyPosition" type="Node3D" parent="." unique_id=1278686294]
-transform = Transform3D(1, 0, 0, 0, 0.8660254, -0.5, 0, 0.5, 0.8660254, 0.6233835, 1.7780027, -7.7241287)
+transform = Transform3D(1, 0, 0, 0, 0.932128, -0.36212894, 0, 0.36212894, 0.932128, 0.6233835, 1.7780027, -7.7241287)
 
 [node name="Camera3D" type="Camera3D" parent="RigidToyPosition" unique_id=1938668116]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 6, 0)
