@@ -76,15 +76,17 @@ current = true
 [node name="stilty boi" parent="RigidToyPosition" unique_id=684036138 instance=ExtResource("2_ybuwm")]
 transform = Transform3D(1, 0, 0, 0, 0.8660254, 0.5, 0, -0.5, 0.8660254, 0, 0.3970778, -4.7683716e-07)
 
-[node name="Player" parent="." unique_id=951074122 instance=ExtResource("3_ybuwm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6233835, 1.7780027, -7.7241287)
+[node name="Player2" parent="." unique_id=1229511522 instance=ExtResource("3_ybuwm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
 
-[node name="RemoteTransform3D" type="RemoteTransform3D" parent="Player" unique_id=471102755]
+[node name="RemoteTransform3D" type="RemoteTransform3D" parent="Player2" unique_id=471102755]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6233835, -2.2219973, -7.7241287)
 remote_path = NodePath("../../RigidToyPosition")
 update_rotation = false
 update_scale = false
 
-[node name="RemoteTransform3D2" type="RemoteTransform3D" parent="Player" unique_id=450921912]
+[node name="RemoteTransform3D2" type="RemoteTransform3D" parent="Player2" unique_id=450921912]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.6233835, -2.2219973, -7.7241287)
 remote_path = NodePath("../../WorldTerrainHandler")
 update_rotation = false
 update_scale = false

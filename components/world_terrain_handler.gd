@@ -8,6 +8,7 @@ extends Node3D
 var infinite_terrain_relative_coord_array : Array
 # Called when the node enters the scene tree for the first time.
 var noisedata : Image
+var acceptinginput  : bool = false
 
 func _ready() -> void:
 	init_infinite_terrain_relative_coord_array()
@@ -16,10 +17,13 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	rotate_terrain_from_input(Input.get_vector("move_left","move_right","move_forward","move_back"))
+	if acceptinginput == true:
+		rotate_terrain_from_input(Input.get_vector("move_left","move_right","move_forward","move_back"))
 	infinite_terrain_generate()
 	clear_distant_cells()
 	pass
+
+
 
 func generate_noise2d():
 	var texture = NoiseTexture2D.new()
@@ -56,7 +60,7 @@ func infinite_terrain_generate():
 	var currentcellnoisefloat : float
 	for radcoord in infinite_terrain_relative_coord_array: #for each cell in gridmap that is blank, make a new cell
 		newcell = closestcell + radcoord
-		currentcellnoisefloat =noisedata.get_pixel(abs(newcell.x % noisesize), abs(newcell.z % noisesize)).r
+		currentcellnoisefloat = noisedata.get_pixel(abs(newcell.x % noisesize), abs(newcell.z % noisesize)).r
 		if terrain_node.get_cell_item(newcell) == -1:
 			if randf() < 0.05:
 				terrain_node.set_cell_item(newcell, 4)

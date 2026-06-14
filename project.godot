@@ -27,7 +27,7 @@ compatibility/default_parent_skeleton_in_mesh_instance_3d=true
 config/name="June2026Project"
 config/description="Indie Blueprint is a comprehensive Godot project template designed to streamline your development process. It includes essential features, optimized settings, and best practices to help you create amazing indie game"
 config/version="1.3.0"
-run/main_scene="uid://0sfb8r36biaf"
+run/main_scene="uid://bkjuwxwhtprmk"
 config/features=PackedStringArray("4.6", "C#", "Forward Plus")
 config/icon="res://icon.svg"
 
