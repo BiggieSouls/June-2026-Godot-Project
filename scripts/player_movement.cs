@@ -46,22 +46,22 @@ public partial class player_movement : RigidBody3D
 		// We check for each move input and update the direction accordingly.
 		anyInput = false;
 		var direction = Vector3.Zero;
-		if (Input.IsActionPressed("move_right"))
+		if (Input.IsActionPressed("move_right_alt"))
 		{
 			direction.X += 1.0f;
 			anyInput = true;
 		}
-		if (Input.IsActionPressed("move_left"))
+		if (Input.IsActionPressed("move_left_alt"))
 		{
 			direction.X -= 1.0f;
 			anyInput = true;
 		}
-		if (Input.IsActionPressed("move_back"))
+		if (Input.IsActionPressed("move_back_alt"))
 		{
 			direction.Z -= 1.0f;
 			anyInput = true;
 		}
-		if (Input.IsActionPressed("move_forward"))
+		if (Input.IsActionPressed("move_forward_alt"))
 		{
 			direction.Z += 1.0f;
 			anyInput = true;
