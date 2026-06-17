@@ -1,17 +1,24 @@
 using Godot;
 
-public partial class Spring : Node3D
+public partial class Spring : Reacts
 {
-    [Export]
-    public float BounceForce = 5.0f;
+    [Export] public float BounceForce = 5.0f;
 
     private Area3D _area;
 
     public override void _Ready()
     {
+        _type = "Spring";
+        _sound = GD.Load<AudioStream>("res://assets/sounds/spring.mp3");
+
         _area = GetNode<Area3D>("StaticBody3D/Area3D");
 
         _area.BodyEntered += OnBodyEntered;
+    }
+
+    public override void DoThingDrawCard(player_movement player)
+    {
+
     }
 
     private void OnBodyEntered(Node3D body)

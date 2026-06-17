@@ -26,3 +26,11 @@ shape = SubResource("SphereShape3D_3vyb7")
 
 [node name="RayCast3D" type="RayCast3D" parent="." unique_id=848105849]
 target_position = Vector3(0, -1.1, 0)
+
+[node name="Area3D" type="Area3D" parent="." unique_id=2010081038]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1389179264]
+shape = SubResource("SphereShape3D_3vyb7")
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="." unique_id=1541730625]
+volume_db = -20.0

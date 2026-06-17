@@ -1,12 +1,28 @@
-using System;
 using Godot;
 
 public partial class player_movement : RigidBody3D
 {
 	public RayCast3D Collider_Below = null;
 	public Camera3D Camera = null;
+	private Area3D _detection;
 
-	public override void _Ready()
+    private AudioStream _sfxLandingLight = GD.Load<AudioStream>("res://assets/sounds/landing_light.mp3");
+    private AudioStream _sfxLandingHeavy = GD.Load<AudioStream>("res://assets/sounds/landing_heavy.mp3");
+    private AudioStreamPlayer3D _sound;
+
+    public int Score = 0;
+
+	[Export] public float LandingThresholdHeavy = 10;
+
+    // How fast the player moves in meters per second.
+    [Export] public int Speed { get; set; } = 20;
+    [Export] public float Friction { get; set; } = 0.99f;
+
+    private bool anyInput = false;
+    private bool onGround = false;
+    private float jumpStrength = 9f;
+
+    public override void _Ready()
 	{
 		AddToGroup("Player");
 
@@ -14,17 +30,13 @@ public partial class player_movement : RigidBody3D
 		Collider_Below.TopLevel = true;
 		if(GetParent() != null)
 			Camera = GetParent().GetNode<Camera3D>("Camera/YawPivot/PitchPivot/Camera3D");
-	}
 
-	// How fast the player moves in meters per second.
-	[Export]
-	public int Speed { get; set; } = 20;
-	[Export]
-	public float Friction { get; set; } = 0.99f;
+		_detection = GetNode<Area3D>("Area3D");
+        _detection.AreaEntered += OnAreaEntered;
+		//_detection.AreaExited += OnAreaExited;
 
-	private bool anyInput = false;
-	private bool onGround = false;
-	private float jumpStrength = 9f;
+		_sound = GetNode<AudioStreamPlayer3D>("AudioStreamPlayer3D");
+    }
 
 	public override void _PhysicsProcess(double delta)
 	{
@@ -77,11 +89,19 @@ public partial class player_movement : RigidBody3D
 			forward * direction.Z +
 			right * direction.X;
 
-		ApplyCentralForce(moveDirection * (onGround ? Speed : Speed/3)); //No air control for you (1/3rd speed)
+        // Remove velocity component perpendicular to the ground
+        Vector3 groundNormal = Collider_Below.GetCollisionNormal();
+        Vector3 planarVelocity = LinearVelocity - groundNormal * LinearVelocity.Dot(groundNormal);
+        float speed = planarVelocity.Length();
+
+		float localSpeedMult = (onGround ? Speed : Speed / 3); //No air control for you (1/3rd speed)
+        localSpeedMult *= onGround && speed < 5 ? 2 : 1;
+        ApplyCentralForce(moveDirection * localSpeedMult);
 
 		if(onGround && Input.IsActionJustPressed("jump"))
 		{
 			ApplyImpulse(new Vector3(0, jumpStrength, 0));
+			GD.Print("Your score is: " + Score);
 		}
 	}
 
@@ -108,11 +128,42 @@ public partial class player_movement : RigidBody3D
 
 		if (Collider_Below == null)
 			return;
-		else if (Collider_Below.IsColliding())
-			onGround = true;
-		else
-			onGround = false;
 
-		GD.Print("Can Jump? " + onGround);
+		bool isColliding = Collider_Below.IsColliding();
+		if(isColliding && !onGround)
+		{
+			//This means it's the first frame of landing, so we play a sound.
+			if (!_sound.Playing)
+            {
+				GD.Print("Vertical speed: " + state.LinearVelocity.Y);
+				if (state.LinearVelocity.Y <= -1)
+				{
+					_sound.Stream = state.LinearVelocity.Y <= -LandingThresholdHeavy ? _sfxLandingHeavy : _sfxLandingLight; //Load the sound
+					_sound.Play(); //Play sound
+				}
+			}
+        }
+		onGround = isColliding;
+	}
+
+	public void OnAreaEntered(Area3D area)
+	{
+		Node3D obj = area.Owner as Node3D;
+		GD.Print(obj);
+		if (obj.GetType().IsSubclassOf(typeof(Pickup_Base)))
+		{
+			Pickup_Base o = area.Owner as Pickup_Base;
+			_sound.Stream = o._sound;
+			_sound.Play();
+			o.Call("Pickup", this);
+		}
+		else if (obj.GetType().IsSubclassOf(typeof(Reacts)))
+		{
+			GD.Print("HEY");
+			Reacts o = area.Owner as Reacts;
+			_sound.Stream = o._sound;
+			_sound.Play();
+			o.Call("DoThingDrawCard", this);
+		}
 	}
 }
