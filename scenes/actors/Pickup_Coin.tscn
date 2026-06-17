@@ -1,0 +1,35 @@
+[gd_scene format=3 uid="uid://b7x14xlmq3y67"]
+
+[ext_resource type="Script" uid="uid://dygf6k3udsjtw" path="res://scenes/actors/Pickup_Coin.cs" id="1_envtf"]
+[ext_resource type="PackedScene" uid="uid://dhuis61shlj51" path="res://assets/model/coin_bronze.glb" id="2_om84n"]
+[ext_resource type="PackedScene" uid="uid://dt1ttoquw61bu" path="res://assets/model/coin_silver.glb" id="3_qqewd"]
+[ext_resource type="PackedScene" uid="uid://brrn451mp2bxo" path="res://assets/model/coin_gold.glb" id="4_cd7l8"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_umrlq"]
+radius = 1.0
+
+[node name="Pickup_Coin" type="Node3D" unique_id=1424493742]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("1_envtf")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1433484339]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" unique_id=1327602602]
+transform = Transform3D(0.75, 0, 0, 0, 0.75, 0, 0, 0, 0.75, 0, 0, 0)
+shape = SubResource("SphereShape3D_umrlq")
+
+[node name="Model_1" parent="." unique_id=416254341 instance=ExtResource("2_om84n")]
+transform = Transform3D(0.75, 0, 0, 0, 0.75, 0, 0, 0, 0.75, 0, 0, 0)
+
+[node name="Skeleton3D" parent="Model_1/Armature" parent_id_path=PackedInt32Array(416254341, 213967764) index="0" unique_id=536810416]
+bones/0/rotation = Quaternion(0, 0.31475645, 0, 0.94917256)
+
+[node name="Model_5" parent="." unique_id=1901430634 instance=ExtResource("3_qqewd")]
+transform = Transform3D(0.75, 0, 0, 0, 0.75, 0, 0, 0, 0.75, 0, 0, 0)
+visible = false
+
+[node name="Model_10" parent="." unique_id=1996681695 instance=ExtResource("4_cd7l8")]
+transform = Transform3D(0.75, 0, 0, 0, 0.75, 0, 0, 0, 0.75, 0, 0, 0)
+visible = false
+
+[editable path="Model_1"]
