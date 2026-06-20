@@ -1,26 +1,34 @@
 extends Node3D
 #This node expects to be the target of a remote transform3d, set to only position
+@export var remote_terrain_transform_target : Node3D
+
+@export var remote_transform : RemoteTransform3D
 @export var terrain_node : GridMap
 @export var inpute_rotation_speed : float = 0.01
 @export var infinite_terrain_radius : int = 20
 @export var noisesize : int = 1024 #MORE THEN 512
 @export var cell_clear_distance : int = 120
+
+
+var terrain_rotation_desire: Quaternion  = Quaternion.from_euler(Vector3.DOWN) 
 var infinite_terrain_relative_coord_array : Array
 # Called when the node enters the scene tree for the first time.
 var noisedata : Image
-var acceptinginput  : bool = false
+var acceptinginput  : bool = true
 
 func _ready() -> void:
 	init_infinite_terrain_relative_coord_array()
 	generate_noise2d()
+	remote_transform.remote_path = remote_terrain_transform_target.get_path()
 	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	if acceptinginput == true:
-		rotate_terrain_from_input(Input.get_vector("move_left","move_right","move_forward","move_back"))
+		rotate_terrain_from_input(Input.get_vector("second_move_left","second_move_right","second_move_forward","second_move_back"))
 	infinite_terrain_generate()
 	clear_distant_cells()
+	rotate_terrain_towards_desire()
 	pass
 
 
@@ -63,7 +71,7 @@ func infinite_terrain_generate():
 		currentcellnoisefloat = noisedata.get_pixel(abs(newcell.x % noisesize), abs(newcell.z % noisesize)).r
 		if terrain_node.get_cell_item(newcell) == -1:
 			if randf() < 0.05:
-				terrain_node.set_cell_item(newcell, 5)
+				terrain_node.set_cell_item(newcell, 4)
 			else: if currentcellnoisefloat < 0.15:
 				terrain_node.set_cell_item(newcell, 3)
 			else: if currentcellnoisefloat < 0.4:
@@ -71,12 +79,15 @@ func infinite_terrain_generate():
 			else:
 				terrain_node.set_cell_item(newcell, 0)
 	
+func rotate_terrain_towards_desire(desiredquaternion : Quaternion):
+	self.quaternion.slerp(desiredquaternion, 1) #just use this instead
+	pass
 
 func rotate_terrain_from_input(inputvector : Vector2): #uses Vector2 from input.getvector and rotates the handler, causing an 'orbit' rotation of terrain
 	var playerinput  : Vector2 = inputvector  * inpute_rotation_speed #xyzw
 	terrain_node.top_level = false #enables translation inheritence for the rotation function
 	self.rotate(Vector3.RIGHT, playerinput.y)
-	self.rotate(Vector3.FORWARD, playerinput.x)
+	self.rotate(Vector3.UP, playerinput.x)
 	terrain_node.top_level = true
 	pass
 
