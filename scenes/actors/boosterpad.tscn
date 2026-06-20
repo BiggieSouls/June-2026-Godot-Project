@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://db024xkcw12jm"]
+
+[ext_resource type="Script" uid="uid://dqr0nscmel0ut" path="res://scenes/actors/Boosterpad.cs" id="1_pwars"]
+[ext_resource type="PackedScene" uid="uid://damb7w336swfm" path="res://assets/model/boosterpad.glb" id="1_ul4r7"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_pwars"]
+points = PackedVector3Array(2, -0.05, 2, -2, -0.05, 2, 2, -0.05, -2, -2, -0.05, -2, -1.5, 0.05, 1.5, 1.5, 0.05, 1.5, 1.5, 0.05, -1.5, -1.5, 0.05, -1.5)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_qidib"]
+size = Vector3(3, 2.2, 3)
+
+[node name="Node3D" type="Node3D" unique_id=1466804021]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 0, 0)
+script = ExtResource("1_pwars")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1605059052]
+
+[node name="Model" parent="StaticBody3D" unique_id=1114793888 instance=ExtResource("1_ul4r7")]
+
+[node name="Collision_Pad" type="CollisionShape3D" parent="StaticBody3D" unique_id=1608084550]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.049999993, 0)
+shape = SubResource("ConvexPolygonShape3D_pwars")
+
+[node name="Area3D" type="Area3D" parent="." unique_id=1673141065]
+
+[node name="Collision_Boost" type="CollisionShape3D" parent="Area3D" unique_id=150607318]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2, 0)
+shape = SubResource("BoxShape3D_qidib")

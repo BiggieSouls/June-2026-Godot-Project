@@ -1,4 +1,4 @@
-[gd_resource type="ShaderMaterial" load_steps=8 format=3 uid="uid://dolvv80m4a8ym"]
+[gd_resource type="ShaderMaterial" format=3 uid="uid://dolvv80m4a8ym"]
 
 [ext_resource type="Shader" uid="uid://cktt2ge021f0i" path="res://assets/materials/ocean/ocean.gdshader" id="1_dic1h"]
 [ext_resource type="CompressedTexture2DArray" uid="uid://dcvujep4v7k1b" path="res://assets/materials/ocean/textures/caustic.png" id="2_103fq"]
@@ -12,10 +12,10 @@ domain_warp_enabled = true
 domain_warp_fractal_type = 0
 
 [sub_resource type="NoiseTexture2D" id="NoiseTexture2D_hugwt"]
-seamless = true
-seamless_blend_skirt = 0.6
-as_normal_map = true
 noise = SubResource("FastNoiseLite_ud4jo")
+seamless = true
+as_normal_map = true
+seamless_blend_skirt = 0.6
 
 [resource]
 render_priority = 0
