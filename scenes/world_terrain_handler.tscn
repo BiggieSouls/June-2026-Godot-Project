@@ -10,10 +10,6 @@ rotation_edit_mode = 1
 script = ExtResource("1_7fgc1")
 remote_transform = NodePath("Terrain/TerrainRemoteTransform")
 terrain_node = NodePath("Terrain")
-inpute_rotation_speed = null
-infinite_terrain_radius = null
-noisesize = null
-cell_clear_distance = null
 
 [node name="Terrain" type="GridMap" parent="." unique_id=922888506]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -2, 0)

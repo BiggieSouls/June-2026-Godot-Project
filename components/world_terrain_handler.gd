@@ -8,7 +8,7 @@ extends Node3D
 @export var infinite_terrain_radius : int = 20
 @export var noisesize : int = 1024 #MORE THEN 512
 @export var cell_clear_distance : int = 120
-
+@export var rotation_desire_node : Node3D 
 
 var terrain_rotation_desire: Quaternion  = Quaternion.from_euler(Vector3.DOWN) 
 var infinite_terrain_relative_coord_array : Array
@@ -24,15 +24,66 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	if acceptinginput == true:
-		rotate_terrain_from_input(Input.get_vector("second_move_left","second_move_right","second_move_forward","second_move_back"))
+	
 	infinite_terrain_generate()
 	clear_distant_cells()
-	#rotate_terrain_towards_desire()
+	rotation_process()
+	#rotate_terrain_towards_desire(get_terrain_desire_from_node())
 	pass
 
+#    ░█████████    ░██████   ░██████████   ░███    ░██████████░██████  ░██████   ░███    ░██ 
+#    ░██     ░██  ░██   ░██      ░██      ░██░██       ░██      ░██   ░██   ░██  ░████   ░██ 
+#    ░██     ░██ ░██     ░██     ░██     ░██  ░██      ░██      ░██  ░██     ░██ ░██░██  ░██ 
+#    ░█████████  ░██     ░██     ░██    ░█████████     ░██      ░██  ░██     ░██ ░██ ░██ ░██ 
+#    ░██   ░██   ░██     ░██     ░██    ░██    ░██     ░██      ░██  ░██     ░██ ░██  ░██░██ 
+#    ░██    ░██   ░██   ░██      ░██    ░██    ░██     ░██      ░██   ░██   ░██  ░██   ░████ 
+#    ░██     ░██   ░██████       ░██    ░██    ░██     ░██    ░██████  ░██████   ░██    ░███ 
 
+func rotation_process():
+	if acceptinginput == true:
+		rotate_terrain_from_input(Input.get_vector("second_move_left","second_move_right","second_move_forward","second_move_back"))
+	rotate_from_camera_input()
+	pass
+	
+var desire_node_last_quaternion : Quaternion = Quaternion.from_euler(Vector3.FORWARD)
 
+func rotate_from_camera_input(): #uses rotation desire node
+	if Input.is_action_pressed("pull") == true:
+		pass
+	pass
+
+func rotate_terrain_towards_desire(desiredquaternion : Quaternion):
+	terrain_node.top_level = false
+	self.quaternion = desiredquaternion #just use this instead
+	terrain_node.top_level = true
+	pass
+
+func rotate_terrain_from_input(inputvector : Vector2): #uses Vector2 from input.getvector and rotates the handler, causing an 'orbit' rotation of terrain
+	var playerinput  : Vector2 = inputvector  * inpute_rotation_speed #xyzw
+	terrain_node.top_level = false #enables translation inheritence for the rotation function
+	self.rotate(Vector3.LEFT, playerinput.y)
+	self.rotate(Vector3.BACK , playerinput.x)
+	terrain_node.top_level = true
+	pass
+
+func get_terrain_desire_from_node():
+	if rotation_desire_node != null:
+		print(Quaternion.from_euler(rotation_desire_node.global_rotation))
+		#return Quaternion.from_euler(rotation_desire_node.global_rotation)
+		#terrain_rotation_desire = terrain_rotation_desire.slerp(Quaternion.from_euler(rotation_desire_node.global_rotation), 0.5)
+		return terrain_rotation_desire
+	else:
+		return Quaternion.from_euler(Vector3.DOWN)
+	pass
+
+#    ░██████████░██████████ ░█████████  ░█████████     ░███    ░██████░███    ░██ 
+#        ░██    ░██         ░██     ░██ ░██     ░██   ░██░██     ░██  ░████   ░██ 
+#        ░██    ░██         ░██     ░██ ░██     ░██  ░██  ░██    ░██  ░██░██  ░██ 
+#        ░██    ░█████████  ░█████████  ░█████████  ░█████████   ░██  ░██ ░██ ░██ 
+#        ░██    ░██         ░██   ░██   ░██   ░██   ░██    ░██   ░██  ░██  ░██░██ 
+#        ░██    ░██         ░██    ░██  ░██    ░██  ░██    ░██   ░██  ░██   ░████ 
+#        ░██    ░██████████ ░██     ░██ ░██     ░██ ░██    ░██ ░██████░██    ░███ 
+   
 func generate_noise2d():
 	var texture = NoiseTexture2D.new()
 	texture.seamless = true
@@ -79,17 +130,14 @@ func infinite_terrain_generate():
 			else:
 				terrain_node.set_cell_item(newcell, 0)
 	
-func rotate_terrain_towards_desire(desiredquaternion : Quaternion):
-	self.quaternion.slerp(desiredquaternion, 1) #just use this instead
-	pass
 
-func rotate_terrain_from_input(inputvector : Vector2): #uses Vector2 from input.getvector and rotates the handler, causing an 'orbit' rotation of terrain
-	var playerinput  : Vector2 = inputvector  * inpute_rotation_speed #xyzw
-	terrain_node.top_level = false #enables translation inheritence for the rotation function
-	self.rotate(Vector3.RIGHT, playerinput.y)
-	self.rotate(Vector3.UP, playerinput.x)
-	terrain_node.top_level = true
-	pass
+#    ░██           ░██████   ░███████   
+#    ░██          ░██   ░██  ░██   ░██  
+#    ░██         ░██     ░██ ░██    ░██ 
+#    ░██         ░██     ░██ ░██    ░██ 
+#    ░██         ░██     ░██ ░██    ░██ 
+#    ░██          ░██   ░██  ░██   ░██  
+#    ░██████████   ░██████   ░███████   
 
 func clear_distant_cells():
 	var closestcell : Vector3i = terrain_node.local_to_map(terrain_node.to_local(self.position))
