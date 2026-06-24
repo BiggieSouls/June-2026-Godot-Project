@@ -15,14 +15,31 @@ size = Vector3(10, 0.25, 10)
 
 [node name="Main" type="Node3D" unique_id=1746553158]
 
-[node name="Ground" type="StaticBody3D" parent="." unique_id=1358181689]
+[node name="TerrainHandlerRemoteTransform" type="StaticBody3D" parent="." unique_id=1358181689]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.2879553, 0)
 
-[node name="Collider_Physics" type="CollisionShape3D" parent="Ground" unique_id=651484579]
+[node name="Collider_Physics" type="CollisionShape3D" parent="TerrainHandlerRemoteTransform" unique_id=651484579]
 shape = SubResource("BoxShape3D_sgp6g")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Ground" unique_id=558619253]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="TerrainHandlerRemoteTransform" unique_id=558619253]
 mesh = SubResource("BoxMesh_sgp6g")
+
+[node name="Spring" parent="TerrainHandlerRemoteTransform" unique_id=1738681288 instance=ExtResource("3_sugp2")]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 3, -0.39034605, 0)
+
+[node name="Pickup_Coin" parent="TerrainHandlerRemoteTransform" unique_id=1424493742 instance=ExtResource("5_tbgi4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.7120447, -9)
+
+[node name="Pickup_Coin2" parent="TerrainHandlerRemoteTransform" unique_id=828919325 instance=ExtResource("5_tbgi4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.7120447, -12)
+Value = 5
+
+[node name="Pickup_Coin3" parent="TerrainHandlerRemoteTransform" unique_id=1340355504 instance=ExtResource("5_tbgi4")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.7120447, -7)
+Value = 10
+
+[node name="Node3D" parent="TerrainHandlerRemoteTransform" unique_id=1466804021 instance=ExtResource("6_tefeu")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2, -0.28795528, 13)
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=1656585370]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
@@ -48,21 +65,9 @@ script = ExtResource("2_0wfyh")
 transform = Transform3D(-1, 3.6946464e-08, -7.9231945e-08, 0, 0.9063078, 0.4226183, 8.742278e-08, 0.4226183, -0.9063078, 0, 3.85, -4)
 size = 5.0
 
-[node name="Spring" parent="." unique_id=1738681288 instance=ExtResource("3_sugp2")]
-transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 3, 0.89760923, 0)
-
-[node name="WorldTerrainHandler" parent="." unique_id=1401906326 instance=ExtResource("4_jyhfs")]
-
-[node name="Pickup_Coin" parent="." unique_id=1424493742 instance=ExtResource("5_tbgi4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 2, -9)
-
-[node name="Pickup_Coin2" parent="." unique_id=828919325 instance=ExtResource("5_tbgi4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2, -12)
-Value = 5
-
-[node name="Pickup_Coin3" parent="." unique_id=1340355504 instance=ExtResource("5_tbgi4")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 2, -7)
-Value = 10
-
-[node name="Node3D" parent="." unique_id=1466804021 instance=ExtResource("6_tefeu")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2, 1, 13)
+[node name="WorldTerrainHandler" parent="." unique_id=1401906326 node_paths=PackedStringArray("remote_terrain_transform_target") instance=ExtResource("4_jyhfs")]
+remote_terrain_transform_target = NodePath("../TerrainHandlerRemoteTransform")
+inpute_rotation_speed = 0.01
+infinite_terrain_radius = 20
+noisesize = 1024
+cell_clear_distance = 120

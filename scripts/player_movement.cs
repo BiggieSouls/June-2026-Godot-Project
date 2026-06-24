@@ -6,23 +6,23 @@ public partial class player_movement : RigidBody3D
 	public Camera3D Camera = null;
 	private Area3D _detection;
 
-    private AudioStream _sfxLandingLight = GD.Load<AudioStream>("res://assets/sounds/landing_light.mp3");
-    private AudioStream _sfxLandingHeavy = GD.Load<AudioStream>("res://assets/sounds/landing_heavy.mp3");
-    private AudioStreamPlayer3D _sound;
+	private AudioStream _sfxLandingLight = GD.Load<AudioStream>("res://assets/sounds/landing_light.mp3");
+	private AudioStream _sfxLandingHeavy = GD.Load<AudioStream>("res://assets/sounds/landing_heavy.mp3");
+	private AudioStreamPlayer3D _sound;
 
-    public int Score = 0;
+	public int Score = 0;
 
 	[Export] public float LandingThresholdHeavy = 10;
 
-    // How fast the player moves in meters per second.
-    [Export] public int Speed { get; set; } = 20;
-    [Export] public float Friction { get; set; } = 0.99f;
+	// How fast the player moves in meters per second.
+	[Export] public int Speed { get; set; } = 20;
+	[Export] public float Friction { get; set; } = 0.99f;
 
-    private bool anyInput = false;
-    private bool onGround = false;
-    private float jumpStrength = 9f;
+	private bool anyInput = false;
+	private bool onGround = false;
+	private float jumpStrength = 9f;
 
-    public override void _Ready()
+	public override void _Ready()
 	{
 		AddToGroup("Player");
 
@@ -32,11 +32,11 @@ public partial class player_movement : RigidBody3D
 			Camera = GetParent().GetNode<Camera3D>("Camera/YawPivot/PitchPivot/Camera3D");
 
 		_detection = GetNode<Area3D>("Area3D");
-        _detection.AreaEntered += OnAreaEntered;
+		_detection.AreaEntered += OnAreaEntered;
 		//_detection.AreaExited += OnAreaExited;
 
 		_sound = GetNode<AudioStreamPlayer3D>("AudioStreamPlayer3D");
-    }
+	}
 
 	public override void _PhysicsProcess(double delta)
 	{
@@ -134,7 +134,7 @@ public partial class player_movement : RigidBody3D
 		{
 			//This means it's the first frame of landing, so we play a sound.
 			if (!_sound.Playing)
-            {
+			{
 				GD.Print("Vertical speed: " + state.LinearVelocity.Y);
 				if (state.LinearVelocity.Y <= -1)
 				{
@@ -142,7 +142,7 @@ public partial class player_movement : RigidBody3D
 					_sound.Play(); //Play sound
 				}
 			}
-        }
+		}
 		onGround = isColliding;
 	}
 

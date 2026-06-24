@@ -28,7 +28,7 @@ func _process(delta: float) -> void:
 		rotate_terrain_from_input(Input.get_vector("second_move_left","second_move_right","second_move_forward","second_move_back"))
 	infinite_terrain_generate()
 	clear_distant_cells()
-	rotate_terrain_towards_desire()
+	#rotate_terrain_towards_desire()
 	pass
 
 
