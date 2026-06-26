@@ -45,12 +45,21 @@ func rotation_process():
 	if acceptinginput == true:
 		rotate_terrain_from_input(Input.get_vector("second_move_left","second_move_right","second_move_forward","second_move_back"))
 	rotate_from_camera_input()
+	
 	pass
 	
 var desire_node_last_quaternion : Quaternion = Quaternion.from_euler(Vector3.FORWARD)
 
 func rotate_from_camera_input(): #uses rotation desire node
+	if desire_node_last_quaternion == null:
+		desire_node_last_quaternion = quaternion.from_euler(rotation_desire_node.global_rotation)
+	var delta_cam_rotation : Quaternion = quaternion.from_euler(rotation_desire_node.global_rotation) - desire_node_last_quaternion 
+	desire_node_last_quaternion = quaternion.from_euler(rotation_desire_node.global_rotation)
+	print(delta_cam_rotation)
 	if Input.is_action_pressed("pull") == true:
+		terrain_node.top_level = false
+		self.quaternion = self.quaternion + delta_cam_rotation
+		terrain_node.top_level = true
 		pass
 	pass
 
