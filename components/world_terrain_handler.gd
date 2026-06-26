@@ -29,6 +29,8 @@ func _process(delta: float) -> void:
 	clear_distant_cells()
 	rotation_process()
 	#rotate_terrain_towards_desire(get_terrain_desire_from_node())
+	orthonormalize()
+	terrain_node.orthonormalize()
 	pass
 
 #    ░█████████    ░██████   ░██████████   ░███    ░██████████░██████  ░██████   ░███    ░██ 
