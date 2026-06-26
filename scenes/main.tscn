@@ -61,7 +61,7 @@ shadow_enabled = true
 [node name="Player" parent="." unique_id=951074122 instance=ExtResource("1_o5qli")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
 
-[node name="RemoteTransform3D" type="RemoteTransform3D" parent="Player" unique_id=1656724126]
+[node name="RemoteTransform3D2" type="RemoteTransform3D" parent="Player" unique_id=1656724126]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -4, 0)
 remote_path = NodePath("../../WorldTerrainHandler")
 update_rotation = false
