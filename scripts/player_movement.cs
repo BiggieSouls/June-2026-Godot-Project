@@ -3,8 +3,10 @@ using Godot;
 public partial class player_movement : RigidBody3D
 {
 	public RayCast3D Collider_Below = null;
-	public Camera3D Camera = null;
+    public RayCast3D Collider_BelowLong = null;
+    public Camera3D Camera = null;
 	private Area3D _detection;
+	private ShapeCast3D _drStone;
 
 	private AudioStream _sfxLandingLight = GD.Load<AudioStream>("res://assets/sounds/landing_light.mp3");
 	private AudioStream _sfxLandingHeavy = GD.Load<AudioStream>("res://assets/sounds/landing_heavy.mp3");
@@ -20,16 +22,21 @@ public partial class player_movement : RigidBody3D
 
 	private bool anyInput = false;
 	private bool onGround = false;
-	private float jumpStrength = 9f;
+    private bool onGroundLong = false;
+    private float jumpStrength = 9f;
 
 	public override void _Ready()
 	{
 		AddToGroup("Player");
 
-		Collider_Below = GetNode<RayCast3D>("RayCast3D");
+		Collider_Below = GetNode<RayCast3D>("RayCast_Ground");
 		Collider_Below.TopLevel = true;
-		if(GetParent() != null)
+        Collider_BelowLong = GetNode<RayCast3D>("RayCast_GroundLong");
+        Collider_BelowLong.TopLevel = true;
+        if (GetParent() != null)
 			Camera = GetParent().GetNode<Camera3D>("Camera/YawPivot/PitchPivot/Camera3D");
+
+		_drStone = GetNode<ShapeCast3D>("ShapeCast3D");
 
 		_detection = GetNode<Area3D>("Area3D");
 		_detection.AreaEntered += OnAreaEntered;
@@ -40,12 +47,25 @@ public partial class player_movement : RigidBody3D
 
 	public override void _PhysicsProcess(double delta)
 	{
+		/*float dist = -1;
+        for (int i = 0; i < _drStone.GetCollisionCount(); i++)
+        {
+            var collision = _drStone.GetCollisionPoint(i);
+
+            StringName name = ((Node)collision).Name;
+            if (name.Equals("Ground"))
+                continue;
+        }
+		
+		Vector3 v = Vector3.LookAt*/
+
 		//After making the raycast top-level, it, uh, doesn't inherit position anymore
 		//So we fix that by moving it XD
 		Collider_Below.GlobalPosition = this.GlobalPosition;
+        Collider_BelowLong.GlobalPosition = this.GlobalPosition;
 
-		//Grab the camera basis so we can adjust control direction based on which way the camera is pointing
-		Basis camBasis = Camera.GlobalBasis;
+        //Grab the camera basis so we can adjust control direction based on which way the camera is pointing
+        Basis camBasis = Camera.GlobalBasis;
 
 		Vector3 forward = -camBasis.Z;
 		forward.Y = 0;
@@ -103,6 +123,11 @@ public partial class player_movement : RigidBody3D
 			ApplyImpulse(new Vector3(0, jumpStrength, 0));
 			GD.Print("Your score is: " + Score);
 		}
+
+		/*if (onGroundLong)
+		{
+			ApplyCentralImpulse(new Vector3(0, -1, 0));
+		}*/
 	}
 
 	public override void _IntegrateForces(PhysicsDirectBodyState3D state)
@@ -129,7 +154,8 @@ public partial class player_movement : RigidBody3D
 		if (Collider_Below == null)
 			return;
 
-		bool isColliding = Collider_Below.IsColliding();
+        bool isCollidingLong = Collider_BelowLong.IsColliding();
+        bool isColliding = Collider_Below.IsColliding();
 		if(isColliding && !onGround)
 		{
 			//This means it's the first frame of landing, so we play a sound.
@@ -144,6 +170,7 @@ public partial class player_movement : RigidBody3D
 			}
 		}
 		onGround = isColliding;
+		onGroundLong = isCollidingLong;
 	}
 
 	public void OnAreaEntered(Area3D area)
