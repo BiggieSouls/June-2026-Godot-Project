@@ -1,6 +1,8 @@
 extends Node3D
 class_name NonGridHandlerComponent
 
+
+@export var unrender_distance_multiplier : float = 1.5
 @export var length_to_unrender : float = 100
 var parent_node : Node3D
 @export var terrain_handler_node : WorldTerrainHandler
@@ -17,11 +19,12 @@ func create(parent : Node3D, terrainhandler : WorldTerrainHandler, unrenderlengt
 	newnode.length_to_unrender = unrenderlength
 	parent.add_child(newnode)
 	return newnode
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
 	var deltavector : Vector3
 	deltavector = terrain_handler_node.global_position - self.global_position
-	if deltavector.length() >= length_to_unrender:
+	if deltavector.length() >= length_to_unrender * unrender_distance_multiplier:
 		parent_node.queue_free()
 		pass
 	pass

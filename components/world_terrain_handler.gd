@@ -6,7 +6,7 @@ class_name WorldTerrainHandler
 @export var remote_transform : RemoteTransform3D
 @export var terrain_node : GridMap
 @export var inpute_rotation_speed : float = 0.01
-@export var infinite_terrain_radius : int = 20
+@export var infinite_terrain_radius : int = 30
 @export var noisesize : int = 1024 #MORE THEN 512
 @export var cell_clear_distance : int = 120
 @export var rotation_desire_node : Node3D 
