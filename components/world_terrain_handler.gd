@@ -133,10 +133,7 @@ func infinite_terrain_generate():
 		currentcellnoisefloat = noisedata.get_pixel(abs(newcell.x % noisesize), abs(newcell.z % noisesize)).r
 		if terrain_node.get_cell_item(newcell) == -1:
 			if randf() < 0.05:
-				terrain_node.set_cell_item(newcell, 7)
-			else: if randf() < 0.01:
-				var cardinal = [0, 10, 16 ,22];
-				terrain_node.set_cell_item(newcell, 8, cardinal.pick_random())
+				terrain_node.set_cell_item(newcell, 4)
 			else: if currentcellnoisefloat < 0.15:
 				terrain_node.set_cell_item(newcell, 3)
 			else: if currentcellnoisefloat < 0.4:
