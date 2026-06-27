@@ -10,6 +10,7 @@ extends Node3D
 @export var cell_clear_distance : int = 120
 @export var rotation_desire_node : Node3D 
 
+var orthogonal_diagonal_adjacency : Array = [Vector3i(1,0,0),Vector3i(1,0,1),Vector3i(1,0,-1),Vector3i(-1,0,1),Vector3i(-1,0,0),Vector3i(-1,0,-1),Vector3i(0,0,-1),Vector3i(0,0,1)]
 var terrain_rotation_desire: Quaternion  = Quaternion.from_euler(Vector3.DOWN) 
 var infinite_terrain_relative_coord_array : Array
 # Called when the node enters the scene tree for the first time.
@@ -24,7 +25,6 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	
 	infinite_terrain_generate()
 	clear_distant_cells()
 	rotation_process()
@@ -55,7 +55,7 @@ func rotate_from_camera_input(): #uses rotation desire node
 		desire_node_last_quaternion = quaternion.from_euler(rotation_desire_node.global_rotation)
 	var delta_cam_rotation : Quaternion = quaternion.from_euler(rotation_desire_node.global_rotation) - desire_node_last_quaternion 
 	desire_node_last_quaternion = quaternion.from_euler(rotation_desire_node.global_rotation)
-	print(delta_cam_rotation)
+	#print(delta_cam_rotation)
 	if Input.is_action_pressed("pull") == true:
 		terrain_node.top_level = false
 		self.quaternion = self.quaternion + delta_cam_rotation
@@ -79,7 +79,7 @@ func rotate_terrain_from_input(inputvector : Vector2): #uses Vector2 from input.
 
 func get_terrain_desire_from_node():
 	if rotation_desire_node != null:
-		print(Quaternion.from_euler(rotation_desire_node.global_rotation))
+		#print(Quaternion.from_euler(rotation_desire_node.global_rotation))
 		#return Quaternion.from_euler(rotation_desire_node.global_rotation)
 		#terrain_rotation_desire = terrain_rotation_desire.slerp(Quaternion.from_euler(rotation_desire_node.global_rotation), 0.5)
 		return terrain_rotation_desire
@@ -133,10 +133,8 @@ func infinite_terrain_generate():
 		currentcellnoisefloat = noisedata.get_pixel(abs(newcell.x % noisesize), abs(newcell.z % noisesize)).r
 		if terrain_node.get_cell_item(newcell) == -1:
 			if randf() < 0.05:
-				terrain_node.set_cell_item(newcell, 7)
-			else: if randf() < 0.01:
-				var cardinal = [0, 10, 16, 22]
-				terrain_node.set_cell_item(newcell, 8, cardinal.pick_random())
+				#terrain_node.set_cell_item(newcell, 4)
+				generate_3x_terrain_piece(newcell, 7)
 			else: if currentcellnoisefloat < 0.15:
 				terrain_node.set_cell_item(newcell, 3)
 			else: if currentcellnoisefloat < 0.4:
@@ -144,6 +142,21 @@ func infinite_terrain_generate():
 			else:
 				terrain_node.set_cell_item(newcell, 0)
 	
+func generate_3x_terrain_piece(gridmapcell : Vector3i, gridmapindex : int):	
+	var testcell : Vector3i
+	var isvalid : bool = true
+	var testcellindex : int
+	for cellmodifier in orthogonal_diagonal_adjacency:
+		testcell = cellmodifier + gridmapcell
+		testcellindex = terrain_node.get_cell_item(testcell)
+		if testcellindex > 3:
+			isvalid=false
+	if isvalid == true:
+		for cellmodifier in orthogonal_diagonal_adjacency:
+			terrain_node.set_cell_item(gridmapcell + cellmodifier, 9)
+		terrain_node.set_cell_item(gridmapcell, gridmapindex)
+	#Inputs a Gridmap Index for a 3x tile and attempt generation
+	pass
 
 #    ░██           ░██████   ░███████   
 #    ░██          ░██   ░██  ░██   ░██  
