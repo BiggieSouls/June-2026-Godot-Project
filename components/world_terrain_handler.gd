@@ -31,9 +31,8 @@ func _ready() -> void:
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	infinite_terrain_generate()
-	clear_distant_cells()
+	clear_distant_cells() #distant noncells clear themselves
 	rotation_process()
-	#rotate_terrain_towards_desire(get_terrain_desire_from_node())
 	orthonormalize()
 	terrain_node.orthonormalize()
 	pass
@@ -110,6 +109,7 @@ func get_terrain_desire_from_node():
 #        ░██    ░██         ░██    ░██  ░██    ░██  ░██    ░██   ░██  ░██   ░████ 
 #        ░██    ░██████████ ░██     ░██ ░██     ░██ ░██    ░██ ░██████░██    ░███ 
    
+@export var array_of_3x_replacable_cell_indexes : Array = [0, -1]
 
 
 func generate_noise2d():
@@ -156,13 +156,16 @@ func infinite_terrain_generate():
 				terrain_node.set_cell_item(newcell, 3)
 			else: if currentcellnoisefloat < 0.4:
 				terrain_node.set_cell_item(newcell, 1, randi_range(0,23))
+				if randf() < 0.1:
+					generate_non_grid_piece_spring(newcell)
 			else:
 				terrain_node.set_cell_item(newcell, 0)
 	
 func generate_non_grid_piece_spring(gridmapcell : Vector3i):
 	var newspring : Node3D = spring_scene.instantiate()
+	var newspringpos : Vector3 = terrain_node.to_global(terrain_node.map_to_local(gridmapcell + Vector3i.UP))
 	terrain_node.add_child(newspring)
-	newspring.position = Vector3(0,5,0)
+	newspring.position = newspringpos
 	#NonGridHandlerComponent.create(newspring, self, cell_clear_distance)
 	create_nongrid_handler(newspring)
 	pass
@@ -182,15 +185,22 @@ func generate_3x_terrain_piece(gridmapcell : Vector3i, gridmapindex : int):
 	for cellmodifier in orthogonal_diagonal_adjacency:
 		testcell = cellmodifier + gridmapcell
 		testcellindex = terrain_node.get_cell_item(testcell)
-		
-		if testcellindex > 3:
-			isvalid=false
+		if check_against_3x_replaceables(testcellindex) == false:
+			isvalid = false
 	if isvalid == true:
 		for cellmodifier in orthogonal_diagonal_adjacency:
 			terrain_node.set_cell_item(gridmapcell + cellmodifier, 9)
 		terrain_node.set_cell_item(gridmapcell, gridmapindex)
 	#Inputs a Gridmap Index for a 3x tile and attempt generation
 	pass
+	
+func check_against_3x_replaceables(checkedcell : int): 
+	var legality : bool = false
+	for index in array_of_3x_replacable_cell_indexes:
+		if index == checkedcell:
+			legality = true
+	return legality
+			
 
 #    ░██           ░██████   ░███████   
 #    ░██          ░██   ░██  ░██   ░██  
