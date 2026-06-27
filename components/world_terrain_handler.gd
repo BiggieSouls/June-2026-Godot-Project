@@ -134,7 +134,7 @@ func infinite_terrain_generate():
 		if terrain_node.get_cell_item(newcell) == -1:
 			if randf() < 0.05:
 				#terrain_node.set_cell_item(newcell, 4)
-				generate_3x_terrain_piece(newcell, 7)
+				generate_3x_terrain_piece(newcell, randi_range(7,8))
 			else: if currentcellnoisefloat < 0.15:
 				terrain_node.set_cell_item(newcell, 3)
 			else: if currentcellnoisefloat < 0.4:
