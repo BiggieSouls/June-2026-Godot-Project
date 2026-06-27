@@ -6,7 +6,7 @@ public partial class player_movement : RigidBody3D
     public RayCast3D Collider_BelowLong = null;
     public Camera3D Camera = null;
 	private Area3D _detection;
-	private ShapeCast3D _drStone;
+	private ShapeCast3D _domainExpansion;
 
 	private AudioStream _sfxLandingLight = GD.Load<AudioStream>("res://assets/sounds/landing_light.mp3");
 	private AudioStream _sfxLandingHeavy = GD.Load<AudioStream>("res://assets/sounds/landing_heavy.mp3");
@@ -33,10 +33,12 @@ public partial class player_movement : RigidBody3D
 		Collider_Below.TopLevel = true;
         Collider_BelowLong = GetNode<RayCast3D>("RayCast_GroundLong");
         Collider_BelowLong.TopLevel = true;
+        _domainExpansion = GetNode<ShapeCast3D>("ShapeCast3D");
+        _domainExpansion.TopLevel = true;
         if (GetParent() != null)
 			Camera = GetParent().GetNode<Camera3D>("Camera/YawPivot/PitchPivot/Camera3D");
 
-		_drStone = GetNode<ShapeCast3D>("ShapeCast3D");
+		_domainExpansion = GetNode<ShapeCast3D>("ShapeCast3D");
 
 		_detection = GetNode<Area3D>("Area3D");
 		_detection.AreaEntered += OnAreaEntered;
@@ -47,22 +49,11 @@ public partial class player_movement : RigidBody3D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		/*float dist = -1;
-        for (int i = 0; i < _drStone.GetCollisionCount(); i++)
-        {
-            var collision = _drStone.GetCollisionPoint(i);
-
-            StringName name = ((Node)collision).Name;
-            if (name.Equals("Ground"))
-                continue;
-        }
-		
-		Vector3 v = Vector3.LookAt*/
-
 		//After making the raycast top-level, it, uh, doesn't inherit position anymore
 		//So we fix that by moving it XD
-		Collider_Below.GlobalPosition = this.GlobalPosition;
-        Collider_BelowLong.GlobalPosition = this.GlobalPosition;
+		Collider_Below.GlobalPosition = GlobalPosition;
+        Collider_BelowLong.GlobalPosition = GlobalPosition;
+		_domainExpansion.GlobalPosition = GlobalPosition;//new Vector3(GlobalPosition.X, GlobalPosition.Y+1, GlobalPosition.Z);
 
         //Grab the camera basis so we can adjust control direction based on which way the camera is pointing
         Basis camBasis = Camera.GlobalBasis;
@@ -124,13 +115,18 @@ public partial class player_movement : RigidBody3D
 			GD.Print("Your score is: " + Score);
 		}
 
-		/*if (onGroundLong)
-		{
-			ApplyCentralImpulse(new Vector3(0, -1, 0));
-		}*/
-	}
+        /*if (_domainExpansion.IsColliding() && !onGround)
+        {
+            Vector3 closestPoint = _domainExpansion.GetCollisionPoint(0);
+            //Vector3 normal = _domainExpansion.GetCollisionNormal(0);
+			Vector3 newGrav = (closestPoint - GlobalPosition).Normalized();
 
-	public override void _IntegrateForces(PhysicsDirectBodyState3D state)
+			//ApplyCentralForce(newGrav * LinearVelocity);
+            ApplyCentralForce(newGrav * 5);
+        }*/
+    }
+
+    public override void _IntegrateForces(PhysicsDirectBodyState3D state)
 	{
 		// Apply friction per frame
 		if (!anyInput)
