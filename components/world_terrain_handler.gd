@@ -1,4 +1,5 @@
 extends Node3D
+class_name WorldTerrainHandler
 #This node expects to be the target of a remote transform3d, set to only position
 @export var remote_terrain_transform_target : Node3D
 
@@ -9,6 +10,9 @@ extends Node3D
 @export var noisesize : int = 1024 #MORE THEN 512
 @export var cell_clear_distance : int = 120
 @export var rotation_desire_node : Node3D 
+
+@export var spring_scene : PackedScene = preload("res://scenes/actors/spring.tscn")
+
 
 var orthogonal_diagonal_adjacency : Array = [Vector3i(1,0,0),Vector3i(1,0,1),Vector3i(1,0,-1),Vector3i(-1,0,1),Vector3i(-1,0,0),Vector3i(-1,0,-1),Vector3i(0,0,-1),Vector3i(0,0,1)]
 var terrain_rotation_desire: Quaternion  = Quaternion.from_euler(Vector3.DOWN) 
@@ -21,6 +25,7 @@ func _ready() -> void:
 	init_infinite_terrain_relative_coord_array()
 	generate_noise2d()
 	remote_transform.remote_path = remote_terrain_transform_target.get_path()
+	generate_non_grid_piece_spring(Vector3.ZERO)
 	pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -44,23 +49,33 @@ func _process(delta: float) -> void:
 func rotation_process():
 	if acceptinginput == true:
 		rotate_terrain_from_input(Input.get_vector("second_move_left","second_move_right","second_move_forward","second_move_back"))
-	rotate_from_camera_input()
-	
+	#rotate_from_camera_input()
 	pass
 	
 var desire_node_last_quaternion : Quaternion = Quaternion.from_euler(Vector3.FORWARD)
+var desire_node_last : Vector3 = Vector3.ZERO
+
+func rotate_from_mouse_input():
+	var inputvector = Input.get_last_mouse_screen_velocity().normalized() * 0.001
+	if Input.is_action_pressed("pull") == true:
+		terrain_node.top_level = false
+		self.rotate(Vector3.LEFT, inputvector.y)
+		self.rotate(Vector3.BACK , inputvector.x)
+		terrain_node.top_level = true
 
 func rotate_from_camera_input(): #uses rotation desire node
-	if desire_node_last_quaternion == null:
-		desire_node_last_quaternion = quaternion.from_euler(rotation_desire_node.global_rotation)
-	var delta_cam_rotation : Quaternion = quaternion.from_euler(rotation_desire_node.global_rotation) - desire_node_last_quaternion 
-	desire_node_last_quaternion = quaternion.from_euler(rotation_desire_node.global_rotation)
+	if desire_node_last == Vector3.ZERO:
+		desire_node_last = rotation_desire_node.global_rotation
+	var delta_cam_rotation : Vector3 = rotation_desire_node.global_rotation - desire_node_last 
+	desire_node_last = rotation_desire_node.global_rotation
 	#print(delta_cam_rotation)
 	if Input.is_action_pressed("pull") == true:
 		terrain_node.top_level = false
-		self.quaternion = self.quaternion + delta_cam_rotation
+		#self.global_rotation = self.global_rotation - delta_cam_rotation
+		rotate(Vector3i.RIGHT ,delta_cam_rotation.x)
+		rotate(Vector3i.UP, delta_cam_rotation.y)
 		terrain_node.top_level = true
-		pass
+		
 	pass
 
 func rotate_terrain_towards_desire(desiredquaternion : Quaternion):
@@ -95,6 +110,8 @@ func get_terrain_desire_from_node():
 #        ░██    ░██         ░██    ░██  ░██    ░██  ░██    ░██   ░██  ░██   ░████ 
 #        ░██    ░██████████ ░██     ░██ ░██     ░██ ░██    ░██ ░██████░██    ░███ 
    
+
+
 func generate_noise2d():
 	var texture = NoiseTexture2D.new()
 	texture.seamless = true
@@ -142,6 +159,22 @@ func infinite_terrain_generate():
 			else:
 				terrain_node.set_cell_item(newcell, 0)
 	
+func generate_non_grid_piece_spring(gridmapcell : Vector3i):
+	var newspring : Node3D = spring_scene.instantiate()
+	terrain_node.add_child(newspring)
+	newspring.position = Vector3(0,5,0)
+	#NonGridHandlerComponent.create(newspring, self, cell_clear_distance)
+	create_nongrid_handler(newspring)
+	pass
+	
+func create_nongrid_handler(parent : Node3D) -> NonGridHandlerComponent:
+	var newnode : NonGridHandlerComponent = NonGridHandlerComponent.new()
+	newnode.parent_node = parent
+	newnode.terrain_handler_node = self
+	newnode.length_to_unrender = cell_clear_distance
+	parent.add_child(newnode)
+	return newnode
+	
 func generate_3x_terrain_piece(gridmapcell : Vector3i, gridmapindex : int):	
 	var testcell : Vector3i
 	var isvalid : bool = true
@@ -149,6 +182,7 @@ func generate_3x_terrain_piece(gridmapcell : Vector3i, gridmapindex : int):
 	for cellmodifier in orthogonal_diagonal_adjacency:
 		testcell = cellmodifier + gridmapcell
 		testcellindex = terrain_node.get_cell_item(testcell)
+		
 		if testcellindex > 3:
 			isvalid=false
 	if isvalid == true:

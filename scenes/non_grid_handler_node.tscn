@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://cvgd11w3pvgfx"]
+
+[ext_resource type="Script" uid="uid://b7t6iossfp77j" path="res://scripts/nongridobject_handler.gd" id="1_46svh"]
+
+[node name="NonGridHandlerNode" type="Node3D" unique_id=1396716089]
+script = ExtResource("1_46svh")
