@@ -13,7 +13,7 @@ class_name WorldTerrainHandler
 
 @export var spring_scene : PackedScene = preload("res://scenes/actors/spring.tscn")
 
-
+var array_of_non_grid_item_handlers : Array = []
 var orthogonal_diagonal_adjacency : Array = [Vector3i(1,0,0),Vector3i(1,0,1),Vector3i(1,0,-1),Vector3i(-1,0,1),Vector3i(-1,0,0),Vector3i(-1,0,-1),Vector3i(0,0,-1),Vector3i(0,0,1)]
 var terrain_rotation_desire: Quaternion  = Quaternion.from_euler(Vector3.DOWN) 
 var infinite_terrain_relative_coord_array : Array

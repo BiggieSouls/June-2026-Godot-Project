@@ -20,6 +20,8 @@ func create(parent : Node3D, terrainhandler : WorldTerrainHandler, unrenderlengt
 	parent.add_child(newnode)
 	return newnode
 	
+func execute_parent():
+	parent_node.queue_free()
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _physics_process(delta: float) -> void:
 	var deltavector : Vector3
