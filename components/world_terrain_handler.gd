@@ -74,7 +74,6 @@ func rotate_from_camera_input(): #uses rotation desire node
 		rotate(Vector3i.RIGHT ,delta_cam_rotation.x)
 		rotate(Vector3i.UP, delta_cam_rotation.y)
 		terrain_node.top_level = true
-		
 	pass
 
 func rotate_terrain_towards_desire(desiredquaternion : Quaternion):
@@ -163,12 +162,17 @@ func infinite_terrain_generate():
 	
 func generate_non_grid_piece_spring(gridmapcell : Vector3i):
 	var newspring : Node3D = spring_scene.instantiate()
-	var newspringpos : Vector3 = terrain_node.to_global(terrain_node.map_to_local(gridmapcell + Vector3i.UP))
+	var newspringpos : Vector3 = terrain_node.to_global(terrain_node.map_to_local(gridmapcell)) #TODO ADD DIST in local up
+	newspringpos += terrain_node.rotation * Vector3.UP
+	#var newspringpos : Vector3 = terrain_node.map_to_local(gridmapcell + Vector3i.UP)
+	
 	terrain_node.add_child(newspring)
-	newspring.position = newspringpos
+	newspring.global_position = newspringpos
 	#NonGridHandlerComponent.create(newspring, self, cell_clear_distance)
 	create_nongrid_handler(newspring)
 	pass
+	
+
 	
 func create_nongrid_handler(parent : Node3D) -> NonGridHandlerComponent:
 	var newnode : NonGridHandlerComponent = NonGridHandlerComponent.new()
@@ -177,6 +181,8 @@ func create_nongrid_handler(parent : Node3D) -> NonGridHandlerComponent:
 	newnode.length_to_unrender = cell_clear_distance
 	parent.add_child(newnode)
 	return newnode
+	
+
 	
 func generate_3x_terrain_piece(gridmapcell : Vector3i, gridmapindex : int):	
 	var testcell : Vector3i
