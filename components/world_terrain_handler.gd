@@ -207,7 +207,7 @@ func check_against_3x_replaceables(checkedcell : int):
 			legality = true
 	return legality
 			
-
+#
 #    ░██           ░██████   ░███████   
 #    ░██          ░██   ░██  ░██   ░██  
 #    ░██         ░██     ░██ ░██    ░██ 

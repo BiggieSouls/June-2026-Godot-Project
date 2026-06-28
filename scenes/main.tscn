@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://cvgd11w3pvgfx" path="res://scenes/non_grid_handler_node.tscn" id="4_o6xl0"]
 [ext_resource type="PackedScene" uid="uid://b7x14xlmq3y67" path="res://scenes/actors/Pickup_Coin.tscn" id="5_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://db024xkcw12jm" path="res://scenes/actors/boosterpad.tscn" id="6_tefeu"]
+[ext_resource type="PackedScene" uid="uid://bt2gxxn2h3n7l" path="res://scenes/test_puzzle.tscn" id="6_tipki"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sgp6g"]
 size = Vector3(10, 0.25, 10)
@@ -63,6 +64,9 @@ terrain_handler_node = NodePath("../../../WorldTerrainHandler")
 
 [node name="Node3D" parent="TerrainHandlerRemoteTransform" unique_id=1466804021 instance=ExtResource("6_tefeu")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 2, 3.8408403, 13)
+
+[node name="TestPuzzle" parent="TerrainHandlerRemoteTransform" unique_id=1522548771 instance=ExtResource("6_tipki")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 0.24652863, 1125.8649)
 
 [node name="Player" parent="." unique_id=951074122 instance=ExtResource("1_o5qli")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)

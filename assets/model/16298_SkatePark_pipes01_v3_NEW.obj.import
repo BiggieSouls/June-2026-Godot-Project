@@ -1,0 +1,25 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cpwlu7v1b1yt4"
+path="res://.godot/imported/16298_SkatePark_pipes01_v3_NEW.obj-6d7c7b65edff06acc44647928372a8f3.mesh"
+
+[deps]
+
+files=["res://.godot/imported/16298_SkatePark_pipes01_v3_NEW.obj-6d7c7b65edff06acc44647928372a8f3.mesh"]
+
+source_file="res://assets/model/16298_SkatePark_pipes01_v3_NEW.obj"
+dest_files=["res://.godot/imported/16298_SkatePark_pipes01_v3_NEW.obj-6d7c7b65edff06acc44647928372a8f3.mesh", "res://.godot/imported/16298_SkatePark_pipes01_v3_NEW.obj-6d7c7b65edff06acc44647928372a8f3.mesh"]
+
+[params]
+
+generate_tangents=true
+generate_lods=true
+generate_shadow_mesh=true
+generate_lightmap_uv2=false
+generate_lightmap_uv2_texel_size=0.2
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+force_disable_mesh_compression=false

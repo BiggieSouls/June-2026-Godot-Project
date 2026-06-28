@@ -1,0 +1,16 @@
+[gd_scene format=3 uid="uid://bt2gxxn2h3n7l"]
+
+[ext_resource type="ArrayMesh" uid="uid://cpwlu7v1b1yt4" path="res://assets/model/16298_SkatePark_pipes01_v3_NEW.obj" id="1_daudg"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tipki"]
+albedo_color = Color(1, 0.48235294, 1, 1)
+
+[node name="TestPuzzle" type="Node3D" unique_id=1522548771]
+
+[node name="CSGCombiner3D" type="CSGCombiner3D" parent="." unique_id=533575353]
+material_override = SubResource("StandardMaterial3D_tipki")
+use_collision = true
+
+[node name="CSGMesh3D" type="CSGMesh3D" parent="CSGCombiner3D" unique_id=1835253620]
+transform = Transform3D(-4.371139e-08, -1, -4.371139e-08, 0, -4.371139e-08, 1, -1, 4.371139e-08, 1.9106855e-15, 0, 0, 0)
+mesh = ExtResource("1_daudg")
