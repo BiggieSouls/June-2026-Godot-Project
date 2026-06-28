@@ -2,5 +2,16 @@
 
 [ext_resource type="Script" uid="uid://b7t6iossfp77j" path="res://scripts/nongridobject_handler.gd" id="1_46svh"]
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_0dmqm"]
+height = 150.0
+
 [node name="NonGridHandlerNode" type="Node3D" unique_id=1396716089]
 script = ExtResource("1_46svh")
+
+[node name="UnrenderArea" type="Area3D" parent="." unique_id=534502074]
+collision_layer = 2
+collision_mask = 2
+
+[node name="UnrenderCylinder" type="CollisionShape3D" parent="UnrenderArea" unique_id=694483100]
+unique_name_in_owner = true
+shape = SubResource("CylinderShape3D_0dmqm")

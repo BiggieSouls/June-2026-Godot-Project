@@ -6,7 +6,10 @@ class_name NonGridHandlerComponent
 @export var length_to_unrender : float = 100
 var parent_node : Node3D
 @export var terrain_handler_node : WorldTerrainHandler
+
+
 # Called when the node enters the scene tree for the first time.
+
 func _ready() -> void:
 	if parent_node == null:
 		parent_node = get_parent()
@@ -17,13 +20,18 @@ func create(parent : Node3D, terrainhandler : WorldTerrainHandler, unrenderlengt
 	newnode.parent_node = parent
 	newnode.terrain_handler_node = terrainhandler
 	newnode.length_to_unrender = unrenderlength
+	%UnrenderCylinder.shape.radius = length_to_unrender
 	parent.add_child(newnode)
 	return newnode
 	
 func execute_parent():
 	parent_node.queue_free()
 # Called every frame. 'delta' is the elapsed time since the previous frame.
+
 func _physics_process(delta: float) -> void:
+	pass
+	
+func unrender_from_distance():
 	var deltavector : Vector3
 	deltavector = terrain_handler_node.global_position - self.global_position
 	if deltavector.length() >= length_to_unrender * unrender_distance_multiplier:
