@@ -171,8 +171,17 @@ func generate_non_grid_piece_spring(gridmapcell : Vector3i):
 	#NonGridHandlerComponent.create(newspring, self, cell_clear_distance)
 	create_nongrid_handler(newspring)
 	pass
-	
 
+var array_nongrid_batch : Array 
+var nongrid_generation_dict = {
+	"Spring" : spring_scene
+}
+func batch_generate_nongrids():
+	pass
+	
+func generate_non_grid_from_array(scenestring : String, gridmapcell : Vector3i):
+	array_nongrid_batch.append(nongrid_generation_dict["Spring"])
+	pass
 	
 func create_nongrid_handler(parent : Node3D) -> NonGridHandlerComponent:
 	var newnode : NonGridHandlerComponent = NonGridHandlerComponent.new()
