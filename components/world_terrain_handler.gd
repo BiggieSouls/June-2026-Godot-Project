@@ -67,7 +67,6 @@ func rotate_from_camera_input(): #uses rotation desire node
 		desire_node_last = rotation_desire_node.global_rotation
 	var delta_cam_rotation : Vector3 = rotation_desire_node.global_rotation - desire_node_last 
 	desire_node_last = rotation_desire_node.global_rotation
-	#print(delta_cam_rotation)
 	if Input.is_action_pressed("pull") == true:
 		terrain_node.top_level = false
 		#self.global_rotation = self.global_rotation - delta_cam_rotation
@@ -92,7 +91,6 @@ func rotate_terrain_from_input(inputvector : Vector2): #uses Vector2 from input.
 
 func get_terrain_desire_from_node():
 	if rotation_desire_node != null:
-		#print(Quaternion.from_euler(rotation_desire_node.global_rotation))
 		#return Quaternion.from_euler(rotation_desire_node.global_rotation)
 		#terrain_rotation_desire = terrain_rotation_desire.slerp(Quaternion.from_euler(rotation_desire_node.global_rotation), 0.5)
 		return terrain_rotation_desire
@@ -151,12 +149,13 @@ func infinite_terrain_generate():
 			if randf() < 0.05:
 				#terrain_node.set_cell_item(newcell, 4)
 				generate_3x_terrain_piece(newcell, randi_range(7,8))
+				if randf() < 0.1:
+					generate_non_grid_piece_spring(newcell)
 			else: if currentcellnoisefloat < 0.15:
 				terrain_node.set_cell_item(newcell, 3)
 			else: if currentcellnoisefloat < 0.4:
 				terrain_node.set_cell_item(newcell, 1, randi_range(0,23))
-				if randf() < 0.1:
-					generate_non_grid_piece_spring(newcell)
+				
 			else:
 				terrain_node.set_cell_item(newcell, 0)
 	
@@ -176,15 +175,16 @@ var array_nongrid_batch : Array
 var nongrid_generation_dict = {
 	"Spring" : spring_scene
 }
+
 func batch_generate_nongrids():
 	pass
 	
 func generate_non_grid_from_array(scenestring : String, gridmapcell : Vector3i):
-	array_nongrid_batch.append(nongrid_generation_dict["Spring"])
+	array_nongrid_batch.append(nongrid_generation_dict[scenestring])
 	pass
 	
 func create_nongrid_handler(parent : Node3D) -> NonGridHandlerComponent:
-	var newnode : NonGridHandlerComponent = NonGridHandlerComponent.new()
+	var newnode : NonGridHandlerComponent = preload("res://scenes/non_grid_handler_node.tscn").instantiate()
 	newnode.parent_node = parent
 	newnode.terrain_handler_node = self
 	newnode.length_to_unrender = cell_clear_distance
