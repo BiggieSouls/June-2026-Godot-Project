@@ -59,6 +59,7 @@ IndieBlueprintLootManager="*uid://bt25a6s155qar"
 IndieBlueprintTurnityManager="*uid://nbsot527xrhy"
 IndieBlueprintRecipeManager="*uid://bb62tgy6dxu4w"
 IndieBlueprintWindowManager="*uid://da7eswtcbmxi0"
+Controller="*uid://cdvspq7jik05x"
 
 [display]
 

@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Godot;
 
 public partial class player_movement : RigidBody3D
@@ -7,12 +10,21 @@ public partial class player_movement : RigidBody3D
 	public Camera3D Camera = null;
 	private Area3D _detection;
 	private ShapeCast3D _domainExpansion;
+	private Controller _controller = Controller.Instance;
+	//private MeshInstance3D _skybox = null;
 
-	private AudioStream _sfxLandingLight = GD.Load<AudioStream>("res://assets/sounds/landing_light.mp3");
+	private Node3D _scoreF = null;
+    private Node3D _scoreE = null;
+    private Node3D _scoreD = null;
+
+    private AudioStream _sfxLandingLight = GD.Load<AudioStream>("res://assets/sounds/landing_light.mp3");
 	private AudioStream _sfxLandingHeavy = GD.Load<AudioStream>("res://assets/sounds/landing_heavy.mp3");
 	private AudioStreamPlayer3D _sound;
 
 	public int Score = 0;
+	//This float is the number of seconds remaining before the player's score grade is hidden.
+	//While it's greater than zero, it's visible, and it has the frame delta subtracted from it each frame.
+	public float _scoreVisible = 0f;
 
 	[Export] public float LandingThresholdHeavy = 10;
 
@@ -24,8 +36,44 @@ public partial class player_movement : RigidBody3D
 	private bool onGround = false;
 	private bool onGroundLong = false;
 	private float jumpStrength = 9f;
+	private int _speedMultScoreRatio = 100;
 
-	public override void _Ready()
+    //Helper method for a timer.
+    public void AddTimer(float duration, bool oneShot, Action method, string id, bool replace = false)
+    {
+        Timer t = new Timer();
+        t.WaitTime = duration;
+        t.OneShot = oneShot;
+        t.Timeout += method;
+		t.SetMeta("id", id);
+
+		/*bool add = false;
+
+		var timers = GetChildren().Where(x => x.GetType().Equals("Timer"));
+		GD.Print(timers);
+		if (timers.Count() == 0)
+			add = true;
+		else
+		{
+            foreach (Timer timer in timers)
+            {
+				if (timer.GetMeta("id").Equals(id))
+				{
+					add = true;
+					if (replace)
+						RemoveChild(timer);
+				}
+            }
+        }
+
+		if (add)
+		{*/
+			AddChild(t);
+			t.Start();
+		//}
+    }
+
+    public override void _Ready()
 	{
 		AddToGroup("Player");
 
@@ -40,12 +88,53 @@ public partial class player_movement : RigidBody3D
 
 		_domainExpansion = GetNode<ShapeCast3D>("ShapeCast3D");
 
-		_detection = GetNode<Area3D>("Area3D");
+		//_skybox = GetNode<MeshInstance3D>("Skybox");
+		//_skybox.TopLevel = true;
+
+		_scoreE = GetNode<Node3D>("Score_E");
+		_scoreE.TopLevel = true;
+        _scoreF = GetNode<Node3D>("Score_F");
+        _scoreF.TopLevel = true;
+        _scoreD = GetNode<Node3D>("Score_D");
+        _scoreD.TopLevel = true;
+
+        _detection = GetNode<Area3D>("Area3D");
 		_detection.AreaEntered += OnAreaEntered;
 		//_detection.AreaExited += OnAreaExited;
 
 		_sound = GetNode<AudioStreamPlayer3D>("AudioStreamPlayer3D");
 	}
+
+	private void ShowScore()
+	{
+		_scoreE.Visible = false;
+        _scoreF.Visible = false;
+        _scoreD.Visible = false;
+
+		if (_scoreVisible == 0)
+			return;
+
+        Vector3 pos = new Vector3(GlobalPosition.X, GlobalPosition.Y + 2.5f, GlobalPosition.Z);
+
+		if (Score > 0 && Score < 5)
+		{
+			_scoreE.Visible = true;
+			_scoreE.GlobalPosition = pos;
+			_scoreE.LookAt(Camera.GlobalPosition, Vector3.Up, true);
+
+        }
+		else if(Score >= 5 && Score < 15) {
+			_scoreF.Visible = true;
+            _scoreF.GlobalPosition = pos;
+            _scoreF.LookAt(Camera.GlobalPosition, Vector3.Up, true);
+        }
+        else if (Score >= 15)
+        {
+            _scoreD.Visible = true;
+            _scoreD.GlobalPosition = pos;
+            _scoreD.LookAt(Camera.GlobalPosition, Vector3.Up, true);
+        }
+    }
 
 	public override void _PhysicsProcess(double delta)
 	{
@@ -55,8 +144,13 @@ public partial class player_movement : RigidBody3D
 		Collider_BelowLong.GlobalPosition = GlobalPosition;
 		_domainExpansion.GlobalPosition = GlobalPosition;//new Vector3(GlobalPosition.X, GlobalPosition.Y+1, GlobalPosition.Z);
 
-		//Grab the camera basis so we can adjust control direction based on which way the camera is pointing
-		Basis camBasis = Camera.GlobalBasis;
+		//_skybox.GlobalPosition = Camera.GlobalPosition;
+
+		_scoreVisible = Math.Max(0, _scoreVisible - (float)delta);
+		ShowScore();
+
+        //Grab the camera basis so we can adjust control direction based on which way the camera is pointing
+        Basis camBasis = Camera.GlobalBasis;
 
 		Vector3 forward = -camBasis.Z;
 		forward.Y = 0;
@@ -106,14 +200,18 @@ public partial class player_movement : RigidBody3D
 		float speed = planarVelocity.Length();
 
 		float localSpeedMult = (onGround ? Speed : Speed / 3); //No air control for you (1/3rd speed)
-		localSpeedMult *= onGround && speed < 5 ? 2 : 1;
+		localSpeedMult *= (onGround && speed < 5) ? 2 : 1;
+		localSpeedMult *= 1 + (Score / _speedMultScoreRatio);
 		ApplyCentralForce(moveDirection * localSpeedMult);
 
 		if(onGround && Input.IsActionJustPressed("jump"))
 		{
 			ApplyImpulse(new Vector3(0, jumpStrength, 0));
 			GD.Print("Your score is: " + Score);
-		}
+
+			_scoreVisible = 5f;
+            //void Result() { _scoreVisible = false; }; AddTimer(5, true, Result, "Score", true);
+        }
 
 		/*if (_domainExpansion.IsColliding() && !onGround)
 		{

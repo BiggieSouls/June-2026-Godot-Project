@@ -22,6 +22,10 @@ public partial class Pickup_Coin : Pickup_Base
         GD.Print("Score +" + Value);
         player.Score += Value;
 
+        player._scoreVisible = 5f;
+        //player._scoreVisible = true;
+        //void Result() { player._scoreVisible = false; }; player.AddTimer(5, true, Result, "Score", true);
+
         QueueFree();
     }
 

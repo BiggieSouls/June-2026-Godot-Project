@@ -2,6 +2,9 @@
 
 [ext_resource type="PackedScene" uid="uid://7vrrr8nr2v1i" path="res://assets/model/character/8ball.glb" id="1_3vyb7"]
 [ext_resource type="Script" uid="uid://dc6b6wwoktcu3" path="res://scripts/player_movement.cs" id="1_g2els"]
+[ext_resource type="PackedScene" uid="uid://eumyo3vcto0e" path="res://assets/model/Score_E.glb" id="2_dqkch"]
+[ext_resource type="PackedScene" uid="uid://beln66et7ycxh" path="res://assets/model/Score_D.glb" id="2_qlg0r"]
+[ext_resource type="PackedScene" uid="uid://dwcd45io6e3vq" path="res://assets/model/Score_F.glb" id="3_qlg0r"]
 
 [sub_resource type="PhysicsMaterial" id="PhysicsMaterial_g2els"]
 friction = 0.8
@@ -20,6 +23,17 @@ physics_material_override = SubResource("PhysicsMaterial_g2els")
 can_sleep = false
 script = ExtResource("1_g2els")
 Friction = 0.999
+
+[node name="Score_D" parent="." unique_id=831064452 instance=ExtResource("2_qlg0r")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 2.5, 0)
+
+[node name="Score_E" parent="." unique_id=534179726 instance=ExtResource("2_dqkch")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 2.5, 0)
+visible = false
+
+[node name="Score_F" parent="." unique_id=1694864228 instance=ExtResource("3_qlg0r")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 2.5, 0)
+visible = false
 
 [node name="Pivot" type="Node3D" parent="." unique_id=1127374728]
 
