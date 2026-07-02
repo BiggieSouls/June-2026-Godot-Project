@@ -1,0 +1,3 @@
+_track1 = Groove Machine by Oleksii Holubiev from Pixabay
+_track2 = Funk Funky Music by Andrii Poradovskyi from Pixabay
+_track3 = Stylish Stomp by Oleksii Holubiev from Pixabay

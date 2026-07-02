@@ -7,6 +7,7 @@ public partial class player_movement : RigidBody3D
 	public Camera3D Camera = null;
 	private Area3D _detection;
 	private ShapeCast3D _domainExpansion;
+	private Controller _controller = Controller.Instance;
 	//private MeshInstance3D _skybox = null;
 
 	private AudioStream _sfxLandingLight = GD.Load<AudioStream>("res://assets/sounds/landing_light.mp3");
