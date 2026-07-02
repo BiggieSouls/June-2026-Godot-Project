@@ -7,6 +7,7 @@ public partial class player_movement : RigidBody3D
 	public Camera3D Camera = null;
 	private Area3D _detection;
 	private ShapeCast3D _domainExpansion;
+	//private MeshInstance3D _skybox = null;
 
 	private AudioStream _sfxLandingLight = GD.Load<AudioStream>("res://assets/sounds/landing_light.mp3");
 	private AudioStream _sfxLandingHeavy = GD.Load<AudioStream>("res://assets/sounds/landing_heavy.mp3");
@@ -24,6 +25,7 @@ public partial class player_movement : RigidBody3D
 	private bool onGround = false;
 	private bool onGroundLong = false;
 	private float jumpStrength = 9f;
+	private int _speedMultScoreRatio = 100;
 
 	public override void _Ready()
 	{
@@ -40,6 +42,9 @@ public partial class player_movement : RigidBody3D
 
 		_domainExpansion = GetNode<ShapeCast3D>("ShapeCast3D");
 
+		//_skybox = GetNode<MeshInstance3D>("Skybox");
+		//_skybox.TopLevel = true;
+
 		_detection = GetNode<Area3D>("Area3D");
 		_detection.AreaEntered += OnAreaEntered;
 		//_detection.AreaExited += OnAreaExited;
@@ -54,9 +59,10 @@ public partial class player_movement : RigidBody3D
 		Collider_Below.GlobalPosition = GlobalPosition;
 		Collider_BelowLong.GlobalPosition = GlobalPosition;
 		_domainExpansion.GlobalPosition = GlobalPosition;//new Vector3(GlobalPosition.X, GlobalPosition.Y+1, GlobalPosition.Z);
+        //_skybox.GlobalPosition = Camera.GlobalPosition;
 
-		//Grab the camera basis so we can adjust control direction based on which way the camera is pointing
-		Basis camBasis = Camera.GlobalBasis;
+        //Grab the camera basis so we can adjust control direction based on which way the camera is pointing
+        Basis camBasis = Camera.GlobalBasis;
 
 		Vector3 forward = -camBasis.Z;
 		forward.Y = 0;
@@ -106,7 +112,8 @@ public partial class player_movement : RigidBody3D
 		float speed = planarVelocity.Length();
 
 		float localSpeedMult = (onGround ? Speed : Speed / 3); //No air control for you (1/3rd speed)
-		localSpeedMult *= onGround && speed < 5 ? 2 : 1;
+		localSpeedMult *= (onGround && speed < 5) ? 2 : 1;
+		localSpeedMult *= 1 + (Score / _speedMultScoreRatio);
 		ApplyCentralForce(moveDirection * localSpeedMult);
 
 		if(onGround && Input.IsActionJustPressed("jump"))
