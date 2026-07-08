@@ -16,9 +16,8 @@ public partial class Spring : Reacts
         _area.BodyEntered += OnBodyEntered;
     }
 
-    public override void DoThingDrawCard(player_movement player)
+    public override void DoThingDrawCard(player_movement player, Area3D area)
     {
-
     }
 
     private void OnBodyEntered(Node3D body)

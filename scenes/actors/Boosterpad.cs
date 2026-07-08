@@ -10,7 +10,7 @@ public partial class Boosterpad : Reacts
     [Export] public int BoostBasedOnScore_RatioOneInX = 4;
     [Export] public bool CanBoostVertical = false;
 
-    public override void DoThingDrawCard(player_movement player)
+    public override void DoThingDrawCard(player_movement player, Area3D area)
     {
         Vector3 velocity = player.LinearVelocity;
         if(BoostBasedOnScore)
