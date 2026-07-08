@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://b7x14xlmq3y67" path="res://scenes/actors/Pickup_Coin.tscn" id="5_tbgi4"]
 [ext_resource type="PackedScene" uid="uid://bt2gxxn2h3n7l" path="res://scenes/test_puzzle.tscn" id="6_tipki"]
 [ext_resource type="Cubemap" uid="uid://dt3w313whwe1a" path="res://assets/textures/Skybox.dds" id="8_tipki"]
+[ext_resource type="PackedScene" uid="uid://gr5ifxet0bo3" path="res://scenes/actors/Guillotine.tscn" id="9_85g3d"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_sgp6g"]
 size = Vector3(10, 0.25, 10)
@@ -112,3 +113,6 @@ mesh = SubResource("PlaneMesh_o6xl0")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1105849340]
 environment = SubResource("Environment_xb3l4")
+
+[node name="Guillotine" parent="." unique_id=812817221 instance=ExtResource("9_85g3d")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -18)

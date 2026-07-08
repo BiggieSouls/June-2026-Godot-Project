@@ -10,7 +10,6 @@ public partial class player_movement : RigidBody3D
 	public Camera3D Camera = null;
 	private Area3D _detection;
 	private ShapeCast3D _domainExpansion;
-	private Controller _controller = Controller.Instance;
 	//private MeshInstance3D _skybox = null;
 
 	private Node3D _scoreF = null;
@@ -284,7 +283,7 @@ public partial class player_movement : RigidBody3D
 			Reacts o = area.Owner as Reacts;
 			_sound.Stream = o._sound;
 			_sound.Play();
-			o.Call("DoThingDrawCard", this);
+			o.Call("DoThingDrawCard", this, area);
 		}
 	}
 }
